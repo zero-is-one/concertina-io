@@ -10,9 +10,20 @@ export const useInstrument = (i?: Instrument) => {
     }
   );
 
-  const [selectedButton, setSelectedButton] = useState<
-    InstrumentButton | null | undefined
+  const [selectedButtonId, setSelectedButtonId] = useState<
+    string | null | undefined
   >(null);
+
+  const selectedButton = instrument.buttons.find(
+    (b) => b.id === selectedButtonId
+  );
+
+  const update = (key: string, value: any) => {
+    setInstrument({
+      ...instrument,
+      [key]: value,
+    });
+  };
 
   const createButton = () => {
     const id = Math.random().toString(36).replace("0.", "");
@@ -32,12 +43,15 @@ export const useInstrument = (i?: Instrument) => {
           id,
           x: 0,
           y,
-          type: "button",
+          format: "full",
           label: "",
           note: "",
+          shortcut: "",
         },
       ],
     });
+
+    setSelectedButtonById(id);
   };
 
   const updateButton = (button: InstrumentButton) => {
@@ -59,11 +73,12 @@ export const useInstrument = (i?: Instrument) => {
     });
   };
 
-  const update = (key: string, value: any) => {
-    setInstrument({
-      ...instrument,
-      [key]: value,
-    });
+  const setSelectedButtonById = (id: string) => {
+    setSelectedButtonId(id);
+  };
+
+  const setSelectedButton = (button: InstrumentButton | null | undefined) => {
+    setSelectedButtonId(button?.id);
   };
 
   return {
@@ -73,6 +88,7 @@ export const useInstrument = (i?: Instrument) => {
     updateButton,
     deleteButton,
     setSelectedButton,
+    setSelectedButtonById,
     selectedButton,
   };
 };

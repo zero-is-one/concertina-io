@@ -1,16 +1,19 @@
-import { Instrument } from "@/types";
 import {
   Box,
   Button,
-  Flex,
   Input,
   HStack,
-  IconButton,
   FormControl,
   FormLabel,
+  Flex,
+  IconButton,
+  InputLeftAddon,
+  InputGroup,
   Center,
-  VStack,
+  AbsoluteCenter,
+  Tooltip,
 } from "@chakra-ui/react";
+import { BiSolidMessageSquareAdd } from "react-icons/bi";
 
 import { useInstrument } from "@/hooks/useInstrument";
 
@@ -20,22 +23,41 @@ export const Topbar = ({
   instrumentStore: ReturnType<typeof useInstrument>;
 }) => {
   return (
-    <HStack spacing={40} width={"100%"} p={2}>
-      <FormControl variant="floating">
-        <Input
-          value={instrumentStore.instrument.name}
-          onChange={(e) => {
-            instrumentStore.update("name", e.target.value);
-          }}
-          width={200}
+    <Flex
+      width={"100%"}
+      p={2}
+      background={"white"}
+      justifyContent={"space-between"}
+      position={"relative"}
+    >
+      <Tooltip hasArrow label="Add button" placement="right">
+        <IconButton
+          aria-label="Add Button"
+          colorScheme="teal"
           size={"lg"}
-          placeholder=""
+          icon={<BiSolidMessageSquareAdd size={28} />}
+          onClick={() => {
+            instrumentStore.createButton();
+          }}
         />
-        <FormLabel>Instrument Name</FormLabel>
-      </FormControl>
+      </Tooltip>
+      <AbsoluteCenter>
+        <InputGroup size={"lg"}>
+          <InputLeftAddon children="Name:" />
+          <Input
+            type="text"
+            placeholder="phone number"
+            value={instrumentStore.instrument.name}
+            onChange={(e) => {
+              instrumentStore.update("name", e.target.value);
+            }}
+          />
+        </InputGroup>
+      </AbsoluteCenter>
+
       <Button size={"lg"} color={"white"} bg={"pink.400"}>
         Save
       </Button>
-    </HStack>
+    </Flex>
   );
 };

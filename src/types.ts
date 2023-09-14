@@ -8,7 +8,10 @@ export type InstrumentButton = {
   id: string;
   x: number;
   y: number;
-  type: "button" | "halfLeft" | "halfRight";
+  format: InstrumentButtonFormat;
   label: string;
   note: string;
+  shortcut: string;
 };
+
+export type InstrumentButtonFormat = "full" | "halfLeft" | "halfRight";

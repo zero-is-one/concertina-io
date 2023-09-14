@@ -9,6 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
 import { useInstrument } from "@/hooks/useInstrument";
+import { InstrumentButton } from "../InstrumentButton/InstrumentButton";
+import { InstrumentButtonFormat } from "@/types";
 
 export const Sidebar = ({
   instrumentStore,
@@ -16,14 +18,7 @@ export const Sidebar = ({
   instrumentStore: ReturnType<typeof useInstrument>;
 }) => {
   return (
-    <Box width={180} mt={"60px"}>
-      <Button
-        onClick={() => {
-          instrumentStore.createButton();
-        }}
-      >
-        Add Button
-      </Button>
+    <Box>
       {instrumentStore.selectedButton && (
         <ButtonOptions instrumentStore={instrumentStore} />
       )}
@@ -36,34 +31,80 @@ export const ButtonOptions = ({
 }: {
   instrumentStore: ReturnType<typeof useInstrument>;
 }) => {
+  const buttonData = instrumentStore.selectedButton;
+
   return (
     <Box>
       <Card p={2} mb={2}>
         <FormControl mb={3}>
-          <FormLabel>Button Type</FormLabel>
-          <Select>
-            <option value="option1">option 1</option>
-            <option value="option2">option 2</option>
-            <option value="option3">option 3</option>
+          <Select
+            value={buttonData?.format as string}
+            onChange={(e) => {
+              if (!buttonData) return;
+
+              instrumentStore.updateButton({
+                ...buttonData,
+                format: e.target.value as InstrumentButtonFormat,
+              });
+            }}
+          >
+            <option value="full">Full Button</option>
+            <option value="halfLeft">Half Button - Point Left</option>
+            <option value="halfRight">Half Button - Point Right</option>
           </Select>
         </FormControl>
-        <FormControl mb={3}>
+        <FormControl variant="floating" my={3}>
+          <Input
+            type="text"
+            value={buttonData?.note}
+            onChange={(e) => {
+              if (!buttonData) return;
+
+              instrumentStore.updateButton({
+                ...buttonData,
+                note: e.target.value,
+              });
+            }}
+          />
           <FormLabel>Music Note</FormLabel>
-          <Input type="text" />
         </FormControl>
-        <FormControl mb={3}>
+        <FormControl variant="floating" my={3}>
+          <Input
+            type="text"
+            value={buttonData?.label}
+            onChange={(e) => {
+              if (!buttonData) return;
+
+              instrumentStore.updateButton({
+                ...buttonData,
+                label: e.target.value,
+              });
+            }}
+          />
           <FormLabel>Label</FormLabel>
-          <Input type="text" />
         </FormControl>
-        <FormControl>
-          <FormLabel>Keyboard Shortcut</FormLabel>
-          <Input type="text" />
+        <FormControl variant="floating" my={3}>
+          <Input
+            type="text"
+            value={buttonData?.shortcut}
+            onChange={(e) => {
+              if (!buttonData) return;
+
+              instrumentStore.updateButton({
+                ...buttonData,
+                shortcut: e.target.value,
+              });
+            }}
+          />
+          <FormLabel>Keyboard Shortcut </FormLabel>
         </FormControl>
       </Card>
 
       <Button
         onClick={() => {
+          if (!instrumentStore.selectedButton) return;
           instrumentStore.deleteButton(instrumentStore.selectedButton);
+          instrumentStore.setSelectedButton(null);
         }}
         leftIcon={<FaTrash />}
         colorScheme="red"

@@ -29,7 +29,7 @@ export const theme = extendTheme({
               pointerEvents: "none",
               mx: 3,
               px: 1,
-              my: 3,
+              my: 2,
               transformOrigin: "left top",
             },
           },

@@ -8,9 +8,9 @@ export const PageCreateInstrument = () => {
   const instrumentStore = useInstrument();
 
   return (
-    <VStack>
+    <VStack spacing={4} background={"gray.100"} minHeight={"100vh"}>
       <Topbar instrumentStore={instrumentStore} />
-      <HStack>
+      <HStack spacing={4} alignItems={"top"} px={2}>
         <Sidebar instrumentStore={instrumentStore} />
         <DraggableGrid instrumentStore={instrumentStore} />
       </HStack>
