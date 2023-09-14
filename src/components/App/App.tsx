@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useConcertinaAudioSampler } from "@/hooks/useConcertinaAudioSampler";
-
+import { ConcertinaButtonLayout } from "../ConcertinaButtonLayout/ConcertinaButtonLayout";
 function App() {
   const [count, setCount] = useState(0);
   useConcertinaAudioSampler();
   return (
     <>
-      <div></div>
+      <ConcertinaButtonLayout />
       <h1>Concertina</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
