@@ -4,17 +4,28 @@ import { Instrument } from "../types";
 
 type InstrumentsStore = {
   instruments: Instrument[];
+  create: (instrument: Instrument) => void;
+  remove: (id: string) => void;
+  update: (instrument: Instrument) => void;
+  delete: (id: string) => void;
 };
 
 export const useInstrumentsStore = create<InstrumentsStore>()((set) => ({
-  instruments: [
-    {
-      name: "test",
-      layout: [
-        { i: "b", x: 0, y: 0 },
-        { i: "c", x: 3, y: 5 },
-      ],
-    },
-  ],
-  // increase: (by) => set((state) => ({ bears: state.bears + by })),
+  instruments: [],
+  create: (instrument: Instrument) =>
+    set((state) => ({ instruments: [...state.instruments, instrument] })),
+  remove: (id: string) =>
+    set((state) => ({
+      instruments: state.instruments.filter((i) => i.id !== id),
+    })),
+  update: (instrument: Instrument) =>
+    set((state) => ({
+      instruments: state.instruments.map((i) =>
+        i.id === instrument.id ? instrument : i
+      ),
+    })),
+  delete: (id: string) =>
+    set((state) => ({
+      instruments: state.instruments.filter((i) => i.id !== id),
+    })),
 }));

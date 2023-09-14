@@ -1,12 +1,14 @@
-import { Layout } from "react-grid-layout-next";
-
 export type Instrument = {
+  id: string;
   name: string;
-  layout: Layout;
-  shortcuts: {
-    i: string;
-    key: string | string[];
-    label: string | string[];
-    note: string | string[];
-  }[];
+  buttons: InstrumentButton[];
+};
+
+export type InstrumentButton = {
+  id: string;
+  x: number;
+  y: number;
+  type: "button" | "halfLeft" | "halfRight";
+  label: string;
+  note: string;
 };
