@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Instrument, InstrumentButton } from "@/types";
+import { useInstrumentsStore } from "@/stores/instruments";
 
-export const useInstrument = (i?: Instrument) => {
+export const useInstrument = (instrumentId?: string) => {
+  const instruments = useInstrumentsStore((state) => state.instruments);
   const [instrument, setInstrument] = useState<Instrument>(
-    i || {
+    instruments.find((i) => i.id === instrumentId) || {
       id: Math.random().toString(36).replace("0.", ""),
-      name: generateDrSeussInstrument(),
+      name: "New Instrument",
       buttons: [],
     }
   );
@@ -92,35 +94,3 @@ export const useInstrument = (i?: Instrument) => {
     selectedButton,
   };
 };
-
-function generateDrSeussInstrument() {
-  const prefixes = [
-    "Fizzle",
-    "Bizzle",
-    "Blimp",
-    "Quirk",
-    "Zobbl",
-    "Flap",
-    "Zing",
-    "Zap",
-  ];
-  const middleParts = ["a", "o", "ee", "oo", "u"];
-  const suffixes = [
-    "phone",
-    "doodle",
-    "flute",
-    "whistle",
-    "harp",
-    "horn",
-    "rian",
-  ];
-
-  const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-  const randomMiddle =
-    middleParts[Math.floor(Math.random() * middleParts.length)];
-  const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-
-  const instrumentName = randomPrefix + randomMiddle + randomSuffix;
-
-  return instrumentName;
-}

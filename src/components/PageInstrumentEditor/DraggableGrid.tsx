@@ -79,6 +79,7 @@ export const DraggableGrid = ({
                 cursor: "grab",
                 zIndex: "10 important!",
                 position: "relative",
+                ...radiusStyles[button?.format || "full"],
               }}
               onClick={() => {
                 instrumentStore.setSelectedButton(
@@ -89,7 +90,7 @@ export const DraggableGrid = ({
               }}
             >
               <AbsoluteCenter style={{ userSelect: "none" }}>
-                {button?.label || "#"}
+                {button?.label || button?.note || "#"}
               </AbsoluteCenter>
             </Box>
           );
@@ -108,3 +109,19 @@ const DraggableGridContainer = styled.div`
     z-index: 0 !important;
   }
 `;
+
+const radiusStyles = {
+  full: { borderRadius: 8 },
+  halfLeft: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+  },
+  halfRight: {
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 0,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+  },
+};

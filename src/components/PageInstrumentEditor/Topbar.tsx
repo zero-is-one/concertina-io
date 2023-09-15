@@ -1,27 +1,25 @@
-import {
-  Box,
-  Button,
-  Input,
-  HStack,
-  FormControl,
-  FormLabel,
-  Flex,
-  IconButton,
-  InputLeftAddon,
-  InputGroup,
-  Center,
-  AbsoluteCenter,
-  Tooltip,
-} from "@chakra-ui/react";
+import { Button, Input, Flex, IconButton } from "@chakra-ui/react";
+import { InputGroup, InputLeftAddon, Tooltip } from "@chakra-ui/react";
+import { AbsoluteCenter } from "@chakra-ui/react";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
 
+import { useInstrumentsStore } from "@/stores/instruments";
 import { useInstrument } from "@/hooks/useInstrument";
+import { useNavigate } from "react-router-dom";
 
 export const Topbar = ({
   instrumentStore,
 }: {
   instrumentStore: ReturnType<typeof useInstrument>;
 }) => {
+  const updateInstrument = useInstrumentsStore((state) => state.update);
+  const navigate = useNavigate();
+
+  const save = () => {
+    updateInstrument(instrumentStore.instrument);
+    navigate("/");
+  };
+
   return (
     <Flex
       width={"100%"}
@@ -55,7 +53,7 @@ export const Topbar = ({
         </InputGroup>
       </AbsoluteCenter>
 
-      <Button size={"lg"} color={"white"} bg={"pink.400"}>
+      <Button size={"lg"} color={"white"} bg={"pink.400"} onClick={save}>
         Save
       </Button>
     </Flex>
