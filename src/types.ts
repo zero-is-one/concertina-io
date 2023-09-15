@@ -14,4 +14,7 @@ export type InstrumentButton = {
   shortcut: string;
 };
 
-export type InstrumentButtonFormat = "full" | "halfLeft" | "halfRight";
+export type InstrumentButtonFormat =
+  | "full"
+  | "halfCircleTop"
+  | "halfCircleBottom";

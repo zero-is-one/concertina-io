@@ -112,13 +112,13 @@ const DraggableGridContainer = styled.div`
 
 const radiusStyles = {
   full: { borderRadius: 8 },
-  halfLeft: {
+  halfCircleBottom: {
     borderTopLeftRadius: 0,
     borderTopRightRadius: 5,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
   },
-  halfRight: {
+  halfCircleTop: {
     borderTopLeftRadius: 5,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 5,

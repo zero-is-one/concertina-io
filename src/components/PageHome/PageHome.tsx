@@ -2,6 +2,7 @@ import { useInstrumentsStore } from "@/stores/instruments";
 import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
+import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
 export const PageHome = () => {
   const navigate = useNavigate();
   const createInsument = useInstrumentsStore((state) => state.create);
@@ -9,6 +10,8 @@ export const PageHome = () => {
 
   return (
     <div>
+      <InstrumentRender />
+
       {instruments.map((instrument) => {
         return (
           <div key={instrument.id}>

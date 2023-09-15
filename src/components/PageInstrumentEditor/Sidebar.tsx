@@ -49,8 +49,8 @@ export const ButtonOptions = ({
             }}
           >
             <option value="full">Full Button</option>
-            <option value="halfLeft">Half Button - Point Left</option>
-            <option value="halfRight">Half Button - Point Right</option>
+            <option value="halfCircleTop">Half Circle - Top</option>
+            <option value="halfCircleBottom">Half Circle - Bottom</option>
           </Select>
         </FormControl>
         <FormControl variant="floating" my={3}>
