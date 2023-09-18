@@ -114,14 +114,14 @@ const radiusStyles = {
   full: { borderRadius: 8 },
   halfCircleBottom: {
     borderTopLeftRadius: 0,
-    borderTopRightRadius: 5,
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+    borderTopRightRadius: 0,
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
   },
   halfCircleTop: {
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 0,
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
 };

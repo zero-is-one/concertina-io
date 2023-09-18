@@ -5,15 +5,15 @@ export const instruments: Instrument[] = [
     id: "CG0Wheatstone030",
     name: "CG Wheatstone 30",
     buttons: [
-      {
-        id: "0eerergcg1cs3aku",
-        x: 16,
-        y: 16,
-        format: "full",
-        label: "",
-        note: "A4",
-        shortcut: "y+space",
-      },
+      // {
+      //   id: "0eerergcg1cs3aku",
+      //   x: 16,
+      //   y: 16,
+      //   format: "full",
+      //   label: "",
+      //   note: "A4",
+      //   shortcut: "y+space",
+      // },
       {
         id: "0egcg1cs3aku",
         x: 16,

@@ -34,36 +34,33 @@ export const InstrumentRender = () => {
   const unitPercentValY = 100 / unitHeight;
 
   return (
-    <div style={{ padding: 10 }}>
-      <h1>{instrument.name}</h1>
-      <div
-        style={{
-          position: "relative",
-          aspectRatio: `${unitWidth} / ${unitHeight}`,
-          width: "100%",
-        }}
-      >
-        {instrument.buttons.map((button) => {
-          const buttonUnitHeight = button.format === "full" ? 4 : 2;
-          return (
-            <div
-              key={button.id}
-              style={{
-                padding: ".15cqw .4cqw",
-                position: "absolute",
-                width: `${unitPercentValX * buttonUnitWidth}%`,
-                height: `${unitPercentValY * buttonUnitHeight}%`,
-                left: `${(button.x - bounds.minX) * unitPercentValX}%`,
-                top: `${(button.y - bounds.minY) * unitPercentValY}%`,
-              }}
-            >
-              <Button format={button.format}>
-                {button.label || button.note}
-              </Button>
-            </div>
-          );
-        })}
-      </div>
+    <div
+      style={{
+        position: "relative",
+        aspectRatio: `${unitWidth} / ${unitHeight}`,
+        width: "100%",
+      }}
+    >
+      {instrument.buttons.map((button) => {
+        const buttonUnitHeight = button.format === "full" ? 4 : 2;
+        return (
+          <div
+            key={button.id}
+            style={{
+              padding: ".15cqw .4cqw",
+              position: "absolute",
+              width: `${unitPercentValX * buttonUnitWidth}%`,
+              height: `${unitPercentValY * buttonUnitHeight}%`,
+              left: `${(button.x - bounds.minX) * unitPercentValX}%`,
+              top: `${(button.y - bounds.minY) * unitPercentValY}%`,
+            }}
+          >
+            <Button format={button.format}>
+              {button.label || button.note}
+            </Button>
+          </div>
+        );
+      })}
     </div>
   );
 };
