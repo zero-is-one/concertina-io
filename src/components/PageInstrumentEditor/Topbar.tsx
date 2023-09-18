@@ -6,17 +6,20 @@ import { BiSolidMessageSquareAdd } from "react-icons/bi";
 import { useInstrumentsStore } from "@/stores/instruments";
 import { useInstrument } from "@/hooks/useInstrument";
 import { useNavigate } from "react-router-dom";
+import { useActiveInstrument } from "@/hooks/useActiveInstrument";
 
 export const Topbar = ({
   instrumentStore,
 }: {
   instrumentStore: ReturnType<typeof useInstrument>;
 }) => {
+  const { setActive } = useActiveInstrument();
   const updateInstrument = useInstrumentsStore((state) => state.update);
   const navigate = useNavigate();
 
   const save = () => {
     updateInstrument(instrumentStore.instrument);
+    setActive(instrumentStore.instrument);
     navigate("/");
   };
 

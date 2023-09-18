@@ -5,6 +5,8 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 type InstrumentsStore = {
   instruments: Instrument[];
+  activeInstrumentId: string;
+
   create: (instrument: Instrument) => void;
   remove: (id: string) => void;
   update: (instrument: Instrument) => void;
@@ -14,6 +16,7 @@ type InstrumentsStore = {
 export const useInstrumentsStore = create<InstrumentsStore>()(
   persist(
     (set) => ({
+      activeInstrumentId: "CG0Wheatstone030",
       instruments: [],
       create: (instrument: Instrument) =>
         set((state) => ({ instruments: [...state.instruments, instrument] })),

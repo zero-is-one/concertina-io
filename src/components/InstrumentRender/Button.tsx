@@ -42,7 +42,7 @@ export const Button = styled.button<{ format: InstrumentButtonFormat }>`
   color: #444;
 
   ${(props) =>
-    props.format === "halfCircleBottom" &&
+    props.format === "halfCircleTop" &&
     `
     padding-top: .4cqw;
     border-bottom-left-radius: 0px;
@@ -52,7 +52,7 @@ export const Button = styled.button<{ format: InstrumentButtonFormat }>`
   `}
 
   ${(props) =>
-    props.format === "halfCircleTop" &&
+    props.format === "halfCircleBottom" &&
     `    
     padding-bottom: .2cqw;
     border-bottom-left-radius: 1000px;

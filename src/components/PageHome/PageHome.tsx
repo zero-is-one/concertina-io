@@ -1,13 +1,26 @@
 import { useInstrumentsStore } from "@/stores/instruments";
-import { Box, Button, Card, Heading, Image } from "@chakra-ui/react";
+import { Box, Button, Card, HStack, Image } from "@chakra-ui/react";
+import { FormControl, FormLabel, Select, Input } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import logoImage from "@/assets/logo-with-title.svg";
 import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
+import { useActiveInstrument } from "@/hooks/useActiveInstrument";
+import { useInstruments } from "@/hooks/useInstruments";
 
 export const PageHome = () => {
   const navigate = useNavigate();
   const createInsument = useInstrumentsStore((state) => state.create);
-  const instruments = useInstrumentsStore((state) => state.instruments);
+  const deleteInstrument = useInstrumentsStore((state) => state.delete);
+  const {
+    customInstruments,
+    systemInstruments,
+    isSystemInstrument,
+    instruments,
+    defaultInstrument,
+  } = useInstruments();
+  const { instrument: activeInstrument, setActive } = useActiveInstrument();
+
+  if (!activeInstrument) return null;
 
   return (
     <Box h="100dvh">
@@ -22,69 +35,82 @@ export const PageHome = () => {
         p={4}
         mb={4}
       >
-        <Card p={3} mb={5}></Card>
-        <InstrumentRender />
+        <Card p={3} mb={5}>
+          <HStack>
+            <FormControl>
+              <FormLabel>Instrument</FormLabel>
+              <Select
+                value={activeInstrument?.id}
+                onChange={(e) => {
+                  //change active instrument
+                  e.preventDefault();
+                  const id = e.target.value;
+                  const instrument = instruments.find(
+                    (instrument) => instrument.id === id
+                  );
+                  if (!instrument) return;
+                  setActive(instrument);
+                }}
+              >
+                {systemInstruments.map((instrument) => {
+                  return (
+                    <option key={instrument.id} value={instrument.id}>
+                      {instrument.name}
+                    </option>
+                  );
+                })}
+
+                {customInstruments.length > 0 && (
+                  <optgroup label="Custom Instruments">
+                    {customInstruments.map((instrument) => {
+                      return (
+                        <option key={instrument.id} value={instrument.id}>
+                          {instrument.name}
+                        </option>
+                      );
+                    })}
+                  </optgroup>
+                )}
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel style={{ opacity: 0 }}>Controls</FormLabel>
+              <HStack>
+                <Button
+                  onClick={() => {
+                    if (isSystemInstrument(activeInstrument)) {
+                      //make a copy of the system instrument
+                      const id = Math.random().toString(36).replace("0.", "");
+                      createInsument({
+                        ...activeInstrument,
+                        id,
+                        name: activeInstrument.name + " (copy)",
+                      });
+                      return navigate(`/edit/${id}`);
+                    }
+
+                    //edit the instrument
+                    navigate(`/edit/${activeInstrument.id}`);
+                  }}
+                >
+                  Edit
+                </Button>
+                {!isSystemInstrument(activeInstrument) && (
+                  <Button
+                    onClick={() => {
+                      setActive(defaultInstrument);
+                      deleteInstrument(activeInstrument.id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </HStack>
+            </FormControl>
+          </HStack>
+        </Card>
+        {activeInstrument && <InstrumentRender instrument={activeInstrument} />}
       </Box>
-
-      {instruments.map((instrument) => {
-        return (
-          <div key={instrument.id}>
-            <Button
-              onClick={() => {
-                navigate(`/edit/${instrument.id}`);
-              }}
-            >
-              {instrument.name}
-            </Button>
-          </div>
-        );
-      })}
-
-      <Button
-        onClick={() => {
-          const id = Math.random().toString(36).replace("0.", "");
-          createInsument({
-            id,
-            name: generateDrSeussInstrument(),
-            buttons: [],
-          });
-          navigate(`/edit/${id}`);
-        }}
-      >
-        Create
-      </Button>
     </Box>
   );
 };
-
-function generateDrSeussInstrument() {
-  const prefixes = [
-    "Fizzle",
-    "Bizzle",
-    "Blimp",
-    "Quirk",
-    "Zobbl",
-    "Flap",
-    "Zing",
-    "Zap",
-  ];
-  const middleParts = ["a", "o", "ee", "oo", "u"];
-  const suffixes = [
-    "phone",
-    "doodle",
-    "flute",
-    "whistle",
-    "harp",
-    "horn",
-    "rian",
-  ];
-
-  const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-  const randomMiddle =
-    middleParts[Math.floor(Math.random() * middleParts.length)];
-  const randomSuffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-
-  const instrumentName = randomPrefix + randomMiddle + randomSuffix;
-
-  return instrumentName;
-}

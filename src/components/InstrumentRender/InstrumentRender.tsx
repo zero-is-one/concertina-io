@@ -1,7 +1,11 @@
-import { instruments } from "@/config/premadeInstruments";
 import { Button } from "./Button";
-export const InstrumentRender = () => {
-  const instrument = instruments[0];
+import { Instrument } from "@/types";
+export const InstrumentRender = ({
+  instrument,
+}: {
+  instrument: Instrument;
+}) => {
+  if (!instrument) return null;
 
   //get min/max x and y
   const bounds = instrument.buttons.reduce(
