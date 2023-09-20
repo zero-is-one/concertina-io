@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 import { InstrumentButtonFormat } from "@/types";
 
-export const Button = styled.button<{ format: InstrumentButtonFormat }>`
+export const Button = styled.button<{
+  format: InstrumentButtonFormat;
+  active?: boolean;
+}>`
   font-family: "Jost", sans-serif;
   user-select: none;
   font-size: 1.6cqw;
@@ -69,13 +72,18 @@ export const Button = styled.button<{ format: InstrumentButtonFormat }>`
   }
 
   &:active,
-  .active {
+  &.active {
     //border: 0px solid #999;
-    background-image: none;
-    border-color: #1f883d;
-    background-color: #1f883d;
-    color: white;
-    padding-top: 0.6cqw;
-    //transform: translateY(4px);
+    ${() => buttonPressCss}//transform: translateY(4px);;;;;;;;
   }
+
+  ${(props) => props.active && buttonPressCss}
+`;
+
+const buttonPressCss = `    
+background-image: none;
+border-color: #1f883d;
+background-color: #1f883d;
+color: white;
+padding-top: 0.6cqw;
 `;

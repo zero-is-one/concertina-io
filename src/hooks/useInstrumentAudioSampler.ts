@@ -1,32 +1,29 @@
 import { useEffect, useRef } from "react";
 import { useSampler } from "@/hooks/useTone";
-
-import { useKeyboardCombos } from "@/hooks/useKeyboardCombos";
-import { getKeyboardCombos, layouts } from "@/config/concertinaLayout";
+import { Instrument } from "@/types";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { getKeyboardShorcuts, layouts } from "@/config/concertinaLayout";
 
 //https://github.com/gleitz/midi-js-soundfonts
 import C4 from "@/assets/C4.mp3";
 import A4 from "@/assets/A4.mp3";
 
-export const useConcertinaAudioSampler = () => {
+export const useInstrumentAudioSampler = (instrument: Instrument) => {
   const sampler = useSampler({
     C4,
     A4,
   });
   const playingNotes = useRef<string[]>([]);
 
-  const noteCombosMap = getKeyboardCombos(layouts["cg-wheatstone-30"].layout);
-  //.filter((c) => c.note === "A4");
-
-  console.log({ noteCombosMap });
-
-  useKeyboardCombos(
-    noteCombosMap.map((c) => c.combo),
-    (comboStates) => {
+  useKeyboardShortcuts(
+    instrument.buttons.map((b) => b.shortcut),
+    (states) => {
       if (!playingNotes.current) return;
-      const pressedCombos = comboStates.filter((c) => c.action === "press");
-      const pressedNotes = pressedCombos.map(
-        (c) => noteCombosMap.find((n) => n.combo === c.keys)?.note || "ERROR"
+
+      const pressedShorcuts = states.filter((c) => c.action === "press");
+      const pressedNotes = pressedShorcuts.map(
+        (c) =>
+          instrument.buttons.find((n) => n.shortcut === c.keys)?.note || "ERROR"
       );
 
       if (pressedNotes.includes("ERROR"))
@@ -51,6 +48,7 @@ export const useConcertinaAudioSampler = () => {
       });
 
       playingNotes.current = pressedNotes;
+      return;
     }
   );
 };

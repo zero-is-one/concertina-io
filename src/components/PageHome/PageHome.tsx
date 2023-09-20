@@ -6,6 +6,7 @@ import logoImage from "@/assets/logo-with-title.svg";
 import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
 import { useActiveInstrument } from "@/hooks/useActiveInstrument";
 import { useInstruments } from "@/hooks/useInstruments";
+import { useInstrumentAudioSampler } from "@/hooks/useInstrumentAudioSampler";
 
 export const PageHome = () => {
   const navigate = useNavigate();
@@ -19,6 +20,8 @@ export const PageHome = () => {
     defaultInstrument,
   } = useInstruments();
   const { instrument: activeInstrument, setActive } = useActiveInstrument();
+
+  useInstrumentAudioSampler(activeInstrument || defaultInstrument);
 
   if (!activeInstrument) return null;
 
