@@ -8,43 +8,48 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FaTrash } from "react-icons/fa";
-import { useInstrument } from "@/hooks/useInstrument";
-import { InstrumentButton } from "../InstrumentButton/InstrumentButton";
-import { InstrumentButtonFormat } from "@/types";
+import { useInstumentSchemaContext } from "@/hooks/useInstrumentSchemaContext";
+import { InstrumentButtonShape, InstrumentButtonSchema } from "@/types";
 
 export const Sidebar = ({
-  instrumentStore,
+  setSelectedButton,
+  selectedButton,
 }: {
-  instrumentStore: ReturnType<typeof useInstrument>;
+  setSelectedButton: (button: InstrumentButtonSchema | null) => void;
+  selectedButton: InstrumentButtonSchema | null;
 }) => {
-  return (
-    <Box>
-      {instrumentStore.selectedButton && (
-        <ButtonOptions instrumentStore={instrumentStore} />
-      )}
-    </Box>
-  );
-};
+  const { schema, setSchema } = useInstumentSchemaContext();
 
-export const ButtonOptions = ({
-  instrumentStore,
-}: {
-  instrumentStore: ReturnType<typeof useInstrument>;
-}) => {
-  const buttonData = instrumentStore.selectedButton;
+  const updateButton = (button: InstrumentButtonSchema) => {
+    setSchema({
+      ...schema,
+
+      buttons: schema.buttons.map((b) => {
+        if (b.id === button.id) return button;
+        return b;
+      }),
+    });
+  };
+
+  const deleteButton = (button: InstrumentButtonSchema) => {
+    setSchema({
+      ...schema,
+      buttons: schema.buttons.filter((b) => b.id !== button.id),
+    });
+  };
+
+  if (!selectedButton) return null;
 
   return (
     <Box>
       <Card p={2} mb={2}>
         <FormControl mb={3}>
           <Select
-            value={buttonData?.format as string}
+            value={selectedButton.shape as string}
             onChange={(e) => {
-              if (!buttonData) return;
-
-              instrumentStore.updateButton({
-                ...buttonData,
-                format: e.target.value as InstrumentButtonFormat,
+              updateButton({
+                ...selectedButton,
+                shape: e.target.value as InstrumentButtonShape,
               });
             }}
           >
@@ -60,12 +65,10 @@ export const ButtonOptions = ({
         <FormControl variant="floating" my={3}>
           <Input
             type="text"
-            value={buttonData?.note}
+            value={selectedButton.note}
             onChange={(e) => {
-              if (!buttonData) return;
-
-              instrumentStore.updateButton({
-                ...buttonData,
+              updateButton({
+                ...selectedButton,
                 note: e.target.value,
               });
             }}
@@ -75,12 +78,10 @@ export const ButtonOptions = ({
         <FormControl variant="floating" my={3}>
           <Input
             type="text"
-            value={buttonData?.label}
+            value={selectedButton.label}
             onChange={(e) => {
-              if (!buttonData) return;
-
-              instrumentStore.updateButton({
-                ...buttonData,
+              updateButton({
+                ...selectedButton,
                 label: e.target.value,
               });
             }}
@@ -90,12 +91,10 @@ export const ButtonOptions = ({
         <FormControl variant="floating" my={3}>
           <Input
             type="text"
-            value={buttonData?.shortcut}
+            value={selectedButton.shortcut}
             onChange={(e) => {
-              if (!buttonData) return;
-
-              instrumentStore.updateButton({
-                ...buttonData,
+              updateButton({
+                ...selectedButton,
                 shortcut: e.target.value,
               });
             }}
@@ -106,9 +105,8 @@ export const ButtonOptions = ({
 
       <Button
         onClick={() => {
-          if (!instrumentStore.selectedButton) return;
-          instrumentStore.deleteButton(instrumentStore.selectedButton);
-          instrumentStore.setSelectedButton(null);
+          deleteButton(selectedButton);
+          setSelectedButton(null);
         }}
         leftIcon={<FaTrash />}
         colorScheme="red"

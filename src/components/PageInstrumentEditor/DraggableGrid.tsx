@@ -1,27 +1,29 @@
 import { GridLayout, LayoutItem } from "react-grid-layout-next";
 import "/node_modules/react-grid-layout-next/css/styles.css";
-import { useInstrument } from "@/hooks/useInstrument";
 import { AbsoluteCenter, Box } from "@chakra-ui/react";
 import styled from "@emotion/styled";
+import { InstrumentButtonSchema } from "@/types";
+import { useInstumentSchemaContext } from "@/hooks/useInstrumentSchemaContext";
 
 export const DraggableGrid = ({
-  instrumentStore,
+  setSelectedButton,
+  selectedButton,
 }: {
-  instrumentStore: ReturnType<typeof useInstrument>;
+  setSelectedButton: (button: InstrumentButtonSchema | null) => void;
+  selectedButton: InstrumentButtonSchema | null;
 }) => {
-  const layout: LayoutItem[] = instrumentStore.instrument.buttons.map(
-    (item) => {
-      return {
-        i: item.id,
-        x: item.x,
-        y: item.y,
-        w: 4,
-        h: item.format === "full" ? 4 : 2,
-        isDraggable: true,
-        isResizable: false,
-      };
-    }
-  );
+  const { schema, setSchema } = useInstumentSchemaContext();
+  const layout: LayoutItem[] = schema.buttons.map((item) => {
+    return {
+      i: item.id,
+      x: item.x,
+      y: item.y,
+      w: 4,
+      h: item.shape === "full" ? 4 : 2,
+      isDraggable: true,
+      isResizable: false,
+    };
+  });
   const cols = 64;
   const width = 800;
   const marginX = 10;
@@ -45,10 +47,12 @@ export const DraggableGrid = ({
           backgroundColor: "white",
         }}
         onDragStop={(ev) => {
-          instrumentStore.setSelectedButtonById(ev.item?.i as string);
+          setSelectedButton(
+            schema.buttons.find((b) => b.id === ev.item?.i) || null
+          );
         }}
         onLayoutChange={(layout) => {
-          const buttonsCopy = [...instrumentStore.instrument.buttons];
+          const buttonsCopy = [...schema.buttons];
           layout.forEach((item) => {
             const button = buttonsCopy.find((b) => b.id === item.i);
             if (!button) return;
@@ -56,13 +60,14 @@ export const DraggableGrid = ({
             button.y = item.y;
           });
 
-          instrumentStore.update("buttons", buttonsCopy);
+          setSchema({
+            ...schema,
+            buttons: buttonsCopy,
+          });
         }}
       >
         {layout.map((item) => {
-          const button = instrumentStore.instrument.buttons.find(
-            (b) => b.id === item.i
-          );
+          const button = schema.buttons.find((b) => b.id === item.i);
 
           return (
             <Box
@@ -71,21 +76,17 @@ export const DraggableGrid = ({
               color={"white"}
               style={{
                 pointerEvents: "auto",
-                border: `3px solid ${
-                  instrumentStore.selectedButton?.id === item.i
-                    ? "blue"
-                    : "transparent"
-                }`,
                 cursor: "grab",
                 zIndex: "10 important!",
                 position: "relative",
-                ...radiusStyles[button?.format || "full"],
+                border: `3px solid ${
+                  selectedButton?.id === item.i ? "blue" : "transparent"
+                }`,
+                ...shapeStyles[button?.shape || "full"],
               }}
               onClick={() => {
-                instrumentStore.setSelectedButton(
-                  instrumentStore.instrument.buttons.find(
-                    (b) => b.id === item.i
-                  )
+                setSelectedButton(
+                  schema.buttons.find((b) => b.id === item.i) || null
                 );
               }}
             >
@@ -110,7 +111,7 @@ const DraggableGridContainer = styled.div`
   }
 `;
 
-const radiusStyles = {
+const shapeStyles: { [key: string]: React.CSSProperties } = {
   full: { borderRadius: 8 },
   halfCircleTop: {
     borderTopLeftRadius: 6,
@@ -118,13 +119,13 @@ const radiusStyles = {
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
   },
-  TopLeftRounded: {
+  topLeftRounded: {
     borderTopLeftRadius: 6,
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
   },
-  TopRightRounded: {
+  topRightRounded: {
     borderTopLeftRadius: 0,
     borderTopRightRadius: 6,
     borderBottomLeftRadius: 0,
@@ -136,16 +137,16 @@ const radiusStyles = {
     borderBottomLeftRadius: 6,
     borderBottomRightRadius: 6,
   },
-  BottomLeftRounded: {
-    borderTopLeftRadius: 6,
+  bottomLeftRounded: {
+    borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
-    borderBottomLeftRadius: 0,
+    borderBottomLeftRadius: 6,
     borderBottomRightRadius: 0,
   },
-  BottomRightRounded: {
+  bottomRightRounded: {
     borderTopLeftRadius: 0,
-    borderTopRightRadius: 6,
+    borderTopRightRadius: 0,
     borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    borderBottomRightRadius: 6,
   },
 };

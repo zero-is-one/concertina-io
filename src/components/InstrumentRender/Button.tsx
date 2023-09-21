@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { InstrumentButtonFormat } from "@/types";
 
 export const Button = styled.button<{
-  format: InstrumentButtonFormat;
+  shape: InstrumentButtonFormat;
   active?: boolean;
 }>`
   font-family: "Jost", sans-serif;
@@ -35,7 +35,7 @@ export const Button = styled.button<{
   color: #444;
 
   ${(props) =>
-    props.format === "halfCircleTop" &&
+    props.shape === "halfCircleTop" &&
     `
     padding-top: .4cqw;
     border-bottom-left-radius: 0px;
@@ -45,7 +45,7 @@ export const Button = styled.button<{
   `}
 
   ${(props) =>
-    props.format === "topRightRounded" &&
+    props.shape === "topRightRounded" &&
     `
     padding-top: .4cqw;
     border-bottom-left-radius: 0px;
@@ -55,7 +55,7 @@ export const Button = styled.button<{
   `}
 
   ${(props) =>
-    props.format === "topLeftRounded" &&
+    props.shape === "topLeftRounded" &&
     `
     padding-top: .4cqw;
     border-bottom-left-radius: 0px;
@@ -65,7 +65,7 @@ export const Button = styled.button<{
   `}
 
   ${(props) =>
-    props.format === "halfCircleBottom" &&
+    props.shape === "halfCircleBottom" &&
     `    
     padding-bottom: .2cqw;
     border-bottom-left-radius: 1000px;
@@ -75,7 +75,7 @@ export const Button = styled.button<{
   `}
 
   ${(props) =>
-    props.format === "bottomRightRounded" &&
+    props.shape === "bottomRightRounded" &&
     `    
       padding-bottom: .2cqw;
       border-bottom-left-radius: 0;
@@ -85,7 +85,7 @@ export const Button = styled.button<{
     `}
 
     ${(props) =>
-    props.format === "bottomLeftRounded" &&
+    props.shape === "bottomLeftRounded" &&
     `    
       padding-bottom: .2cqw;
       border-bottom-left-radius: 1000px;
@@ -104,7 +104,7 @@ export const Button = styled.button<{
   &.active {
     //border: 0px solid #999;
     ${() =>
-      buttonPressCss}//transform: translateY(4px);;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      buttonPressCss}//transform: translateY(4px);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   }
 
   ${(props) => props.active && buttonPressCss}

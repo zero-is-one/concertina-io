@@ -1,29 +1,67 @@
-import { useInstrumentsStore } from "@/stores/instruments";
 import { Box, Button, Card, HStack, Image } from "@chakra-ui/react";
-import { FormControl, FormLabel, Select, Input } from "@chakra-ui/react";
+import { FormControl, FormLabel, Select } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import logoImage from "@/assets/logo-with-title.svg";
-import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
-import { useActiveInstrument } from "@/hooks/useActiveInstrument";
-import { useInstruments } from "@/hooks/useInstruments";
+import { useInstrumentSchemasStore } from "@/stores/InstrumentsSchemasStore";
+import { useInstrumentSchemas } from "@/hooks/useInstrumentSchemas";
+import { SelectInstrumentSchema } from "./SelectInstrumentSchema";
 import { useInstrumentAudioSampler } from "@/hooks/useInstrumentAudioSampler";
 import { InstrumentPiano } from "../InstrumentPiano/InstrumentPiano";
+import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
+
+import { InstrumentSchemaProvider } from "@/contexts/InstrumentSchemaContext";
+import { useInstumentSchemaContext } from "@/hooks/useInstrumentSchemaContext";
+
 export const PageHome = () => {
+  const instrumentSchemas = useInstrumentSchemasStore(
+    (state) => state.instrumentSchemas
+  );
+  const schemaId = useInstrumentSchemasStore(
+    (state) => state.selectedInstrumentSchemaId
+  );
+  const schema = instrumentSchemas.find((schema) => schema.id === schemaId);
+
+  return (
+    <InstrumentSchemaProvider defaultSchema={schema || instrumentSchemas[0]}>
+      <Content />
+    </InstrumentSchemaProvider>
+  );
+};
+
+export const Content = () => {
   const navigate = useNavigate();
-  const createInsument = useInstrumentsStore((state) => state.create);
-  const deleteInstrument = useInstrumentsStore((state) => state.delete);
-  const {
-    customInstruments,
-    systemInstruments,
-    isSystemInstrument,
-    instruments,
-    defaultInstrument,
-  } = useInstruments();
-  const { instrument: activeInstrument, setActive } = useActiveInstrument();
+  const deleteSchema = useInstrumentSchemasStore((state) => state.delete);
+  const createSchema = useInstrumentSchemasStore((state) => state.create);
+  const { schema: instrumentSchema, setSchema: setInstrumentSchema } =
+    useInstumentSchemaContext();
 
-  useInstrumentAudioSampler(activeInstrument || defaultInstrument);
+  const { isSystemInstrumentSchema, defaultInstrumentSchema } =
+    useInstrumentSchemas();
 
-  if (!activeInstrument) return null;
+  //useInstrumentAudioSampler(activeInstrument || defaultInstrument);
+
+  const remove = () => {
+    if (!instrumentSchema) return;
+    deleteSchema(instrumentSchema);
+    setInstrumentSchema(defaultInstrumentSchema);
+  };
+
+  const edit = () => {
+    if (isSystemInstrumentSchema(instrumentSchema)) {
+      //make a copy of the system instrument
+      const id = Math.random().toString(36).replace("0.", "");
+
+      createSchema({
+        ...instrumentSchema,
+        id,
+        name: instrumentSchema.name + " (copy)",
+      });
+
+      return navigate(`/edit/${id}`);
+    }
+
+    navigate(`/edit/${instrumentSchema.id}`);
+  };
 
   return (
     <Box h="100dvh">
@@ -42,79 +80,26 @@ export const PageHome = () => {
           <HStack>
             <FormControl>
               <FormLabel>Instrument</FormLabel>
-              <Select
-                value={activeInstrument?.id}
-                onChange={(e) => {
-                  //change active instrument
-                  e.preventDefault();
-                  const id = e.target.value;
-                  const instrument = instruments.find(
-                    (instrument) => instrument.id === id
-                  );
-                  if (!instrument) return;
-                  setActive(instrument);
-                }}
-              >
-                {systemInstruments.map((instrument) => {
-                  return (
-                    <option key={instrument.id} value={instrument.id}>
-                      {instrument.name}
-                    </option>
-                  );
-                })}
-
-                {customInstruments.length > 0 && (
-                  <optgroup label="Custom Instruments">
-                    {customInstruments.map((instrument) => {
-                      return (
-                        <option key={instrument.id} value={instrument.id}>
-                          {instrument.name}
-                        </option>
-                      );
-                    })}
-                  </optgroup>
-                )}
-              </Select>
+              <SelectInstrumentSchema />
             </FormControl>
             <FormControl>
               <FormLabel style={{ opacity: 0 }}>Controls</FormLabel>
               <HStack>
-                <Button
-                  onClick={() => {
-                    if (isSystemInstrument(activeInstrument)) {
-                      //make a copy of the system instrument
-                      const id = Math.random().toString(36).replace("0.", "");
-                      createInsument({
-                        ...activeInstrument,
-                        id,
-                        name: activeInstrument.name + " (copy)",
-                      });
-                      return navigate(`/edit/${id}`);
-                    }
-
-                    //edit the instrument
-                    navigate(`/edit/${activeInstrument.id}`);
-                  }}
-                >
-                  Edit
-                </Button>
-                {!isSystemInstrument(activeInstrument) && (
-                  <Button
-                    onClick={() => {
-                      setActive(defaultInstrument);
-                      deleteInstrument(activeInstrument.id);
-                    }}
-                  >
-                    Delete
-                  </Button>
+                <Button onClick={edit}>Edit</Button>
+                {!isSystemInstrumentSchema(instrumentSchema) && (
+                  <Button onClick={remove}>Delete</Button>
                 )}
               </HStack>
             </FormControl>
           </HStack>
         </Card>
-        {activeInstrument && <InstrumentRender instrument={activeInstrument} />}
+        {instrumentSchema && (
+          <InstrumentRender instrumentSchema={instrumentSchema} />
+        )}
       </Box>
-      {activeInstrument && <InstrumentPiano instrument={activeInstrument} />}
+      {instrumentSchema && (
+        <InstrumentPiano instrumentSchema={instrumentSchema} />
+      )}
     </Box>
   );
 };

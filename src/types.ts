@@ -1,20 +1,20 @@
-export type Instrument = {
+export type InstrumentSchema = {
   id: string;
   name: string;
-  buttons: InstrumentButton[];
+  buttons: InstrumentButtonSchema[];
 };
 
-export type InstrumentButton = {
+export type InstrumentButtonSchema = {
   id: string;
   x: number;
   y: number;
-  format: InstrumentButtonFormat;
+  shape: InstrumentButtonShape;
   label: string;
   note: string;
   shortcut: string;
 };
 
-export type InstrumentButtonFormat =
+export type InstrumentButtonShape =
   | "full"
   | "halfCircleTop"
   | "topRightRounded"
@@ -22,3 +22,13 @@ export type InstrumentButtonFormat =
   | "halfCircleBottom"
   | "bottomRightRounded"
   | "bottomLeftRounded";
+
+export type InstrumentButtonState = {
+  id: string;
+  isPressed: boolean;
+};
+
+export type InstrumentState = {
+  id: string;
+  buttons: InstrumentButtonState[];
+};

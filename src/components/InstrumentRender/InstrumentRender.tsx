@@ -1,21 +1,21 @@
 import { useKeyboardShortcutsPressed } from "@/hooks/useKeyboardShortcuts";
 import { Button } from "./Button";
-import { Instrument } from "@/types";
+import { InstrumentSchema } from "@/types";
 import { Tooltip } from "@chakra-ui/react";
 
 export const InstrumentRender = ({
-  instrument,
+  instrumentSchema,
 }: {
-  instrument: Instrument;
+  instrumentSchema: InstrumentSchema;
 }) => {
   const pressedKeys = useKeyboardShortcutsPressed(
-    instrument.buttons.map((button) => button.shortcut)
+    instrumentSchema.buttons.map((button) => button.shortcut)
   );
 
-  if (!instrument) return null;
+  if (!instrumentSchema) return null;
 
   //get min/max x and y
-  const bounds = getInstrumentButtonBounds(instrument);
+  const bounds = getBounds(instrumentSchema);
   const buttonUnitWidth = 4;
   const unitWidth = bounds.maxX - bounds.minX;
   const unitHeight = bounds.maxY - bounds.minY;
@@ -30,8 +30,8 @@ export const InstrumentRender = ({
         width: "100%",
       }}
     >
-      {instrument.buttons.map((button) => {
-        const buttonUnitHeight = button.format === "full" ? 4 : 2;
+      {instrumentSchema.buttons.map((button) => {
+        const buttonUnitHeight = button.shape === "full" ? 4 : 2;
         return (
           <div
             key={button.id}
@@ -47,7 +47,7 @@ export const InstrumentRender = ({
             <Tooltip hasArrow label={button.shortcut}>
               <Button
                 active={pressedKeys.includes(button.shortcut)}
-                format={button.format}
+                shape={button.shape}
               >
                 {button.label || button.note}
               </Button>
@@ -59,11 +59,11 @@ export const InstrumentRender = ({
   );
 };
 
-const getInstrumentButtonBounds = (instrument: Instrument) => {
-  return instrument.buttons.reduce(
+const getBounds = (instrumentSchema: InstrumentSchema) => {
+  return instrumentSchema.buttons.reduce(
     (acc, button) => {
-      const width = button.format === "full" ? 4 : 4;
-      const height = button.format === "full" ? 4 : 2;
+      const width = button.shape === "full" ? 4 : 4;
+      const height = button.shape === "full" ? 4 : 2;
 
       if (button.x < acc.minX) {
         acc.minX = button.x;

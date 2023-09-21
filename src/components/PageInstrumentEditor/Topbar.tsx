@@ -3,24 +3,59 @@ import { InputGroup, InputLeftAddon, Tooltip } from "@chakra-ui/react";
 import { AbsoluteCenter } from "@chakra-ui/react";
 import { BiSolidMessageSquareAdd } from "react-icons/bi";
 
-import { useInstrumentsStore } from "@/stores/instruments";
-import { useInstrument } from "@/hooks/useInstrument";
+import { useInstrumentSchemasStore } from "@/stores/InstrumentsSchemasStore";
+import { useInstrumentSchemaEditor } from "@/hooks/useInstrumentSchemaEditor";
 import { useNavigate } from "react-router-dom";
-import { useActiveInstrument } from "@/hooks/useActiveInstrument";
+import { useActiveInstrumentSchema } from "@/hooks/useActiveInstrumentSchema";
+import { useInstumentSchemaContext } from "@/hooks/useInstrumentSchemaContext";
+import { InstrumentButtonSchema } from "@/types";
 
 export const Topbar = ({
-  instrumentStore,
+  setSelectedButton,
 }: {
-  instrumentStore: ReturnType<typeof useInstrument>;
+  setSelectedButton: (button: InstrumentButtonSchema) => void;
 }) => {
-  const { setActive } = useActiveInstrument();
-  const updateInstrument = useInstrumentsStore((state) => state.update);
+  const { schema, setSchema } = useInstumentSchemaContext();
+  const updateInstrumentSchemaInStore = useInstrumentSchemasStore(
+    (state) => state.update
+  );
   const navigate = useNavigate();
 
   const save = () => {
-    updateInstrument(instrumentStore.instrument);
-    setActive(instrumentStore.instrument);
+    setSchema(schema);
+    updateInstrumentSchemaInStore(schema);
+    useInstrumentSchemasStore.setState({
+      selectedInstrumentSchemaId: schema.id,
+    });
     navigate("/");
+  };
+
+  const createButton = () => {
+    const id = Math.random().toString(36).replace("0.", "");
+
+    const y =
+      schema.buttons.length === 0
+        ? 0
+        : schema.buttons.reduce((acc, curr) => {
+            return curr.y > acc ? curr.y : acc;
+          }, 0) + 4;
+
+    const button: InstrumentButtonSchema = {
+      id,
+      x: 0,
+      y,
+      shape: "full",
+      label: "",
+      note: "",
+      shortcut: "",
+    };
+
+    setSchema({
+      ...schema,
+      buttons: [...schema.buttons, button],
+    });
+
+    setSelectedButton(button);
   };
 
   return (
@@ -37,9 +72,7 @@ export const Topbar = ({
           colorScheme="teal"
           size={"lg"}
           icon={<BiSolidMessageSquareAdd size={28} />}
-          onClick={() => {
-            instrumentStore.createButton();
-          }}
+          onClick={createButton}
         />
       </Tooltip>
       <AbsoluteCenter>
@@ -48,9 +81,9 @@ export const Topbar = ({
           <Input
             type="text"
             placeholder="phone number"
-            value={instrumentStore.instrument.name}
+            value={schema.name}
             onChange={(e) => {
-              instrumentStore.update("name", e.target.value);
+              setSchema({ ...schema, name: e.target.value });
             }}
           />
         </InputGroup>

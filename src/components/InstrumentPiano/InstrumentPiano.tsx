@@ -1,14 +1,18 @@
 import styled from "@emotion/styled";
-import { Instrument } from "@/types";
+import { InstrumentSchema } from "@/types";
 import { Piano } from "react-piano";
 import "react-piano/dist/styles.css";
 import { Note, Range } from "tonal";
 import { useInstrumentButtonsPressed } from "@/hooks/useInstrumentButtonsPressed";
 
-export const InstrumentPiano = ({ instrument }: { instrument: Instrument }) => {
-  const pressed = useInstrumentButtonsPressed(instrument);
+export const InstrumentPiano = ({
+  instrumentSchema,
+}: {
+  instrumentSchema: InstrumentSchema;
+}) => {
+  const pressed = useInstrumentButtonsPressed(instrumentSchema);
 
-  const notes = instrument.buttons.map((button) => button.note);
+  const notes = instrumentSchema.buttons.map((button) => button.note);
   const sortedNotesAsMidi = Note.sortedNames(notes).map((note) =>
     Note.midi(note)
   );
@@ -90,7 +94,7 @@ const PianoContainer = styled.div<{
         .ReactPiano__Key:nth-child(${props.allNotes.indexOf(note) + 1}) {
                 background: white;
                 box-shadow:none;
-                border: 0.4px solid white;
+                border: 0.4px solid #ccc;
 
                 .ReactPiano__NoteLabel {
                     color: #ccc;
