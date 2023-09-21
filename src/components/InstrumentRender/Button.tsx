@@ -31,17 +31,7 @@ export const Button = styled.button<{
   border-top-color: #999;
   border-bottom: 0.3cqw solid #555;
 
-  background-color: #f1f1f1;
-  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.2));
-  background-image: -webkit-linear-gradient(
-    top,
-    transparent,
-    rgba(0, 0, 0, 0.2)
-  );
-  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.2));
-  background-image: -ms-linear-gradient(top, transparent, rgba(0, 0, 0, 0.2));
-  background-image: linear-gradient(top, transparent, rgba(0, 0, 0, 0.2));
-
+  background: linear-gradient(to bottom, #dfdfdf 30%, #ffffff 100%);
   color: #444;
 
   ${(props) =>
@@ -55,6 +45,26 @@ export const Button = styled.button<{
   `}
 
   ${(props) =>
+    props.format === "topRightRounded" &&
+    `
+    padding-top: .4cqw;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 1000px;
+    border-top-left-radius: 0;
+  `}
+
+  ${(props) =>
+    props.format === "topLeftRounded" &&
+    `
+    padding-top: .4cqw;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 1000px;
+  `}
+
+  ${(props) =>
     props.format === "halfCircleBottom" &&
     `    
     padding-bottom: .2cqw;
@@ -64,6 +74,25 @@ export const Button = styled.button<{
     border-top-left-radius: 0;
   `}
 
+  ${(props) =>
+    props.format === "bottomRightRounded" &&
+    `    
+      padding-bottom: .2cqw;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 1000px;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    `}
+
+    ${(props) =>
+    props.format === "bottomLeftRounded" &&
+    `    
+      padding-bottom: .2cqw;
+      border-bottom-left-radius: 1000px;
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+    `}
   
 
   &:hover {
@@ -74,7 +103,8 @@ export const Button = styled.button<{
   &:active,
   &.active {
     //border: 0px solid #999;
-    ${() => buttonPressCss}//transform: translateY(4px);;;;;;;;
+    ${() =>
+      buttonPressCss}//transform: translateY(4px);;;;;;;;;;;;;;;;;;;;;;;;;;;;
   }
 
   ${(props) => props.active && buttonPressCss}

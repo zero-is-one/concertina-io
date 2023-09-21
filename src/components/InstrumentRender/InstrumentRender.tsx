@@ -11,7 +11,6 @@ export const InstrumentRender = ({
   const pressedKeys = useKeyboardShortcutsPressed(
     instrument.buttons.map((button) => button.shortcut)
   );
-  //console.log(pressedKeys);
 
   if (!instrument) return null;
 

@@ -50,7 +50,11 @@ export const ButtonOptions = ({
           >
             <option value="full">Full Button</option>
             <option value="halfCircleTop">Half Circle - Top</option>
+            <option value="topRightRounded">Top Right Rounded</option>
+            <option value="topLeftRounded">Top Left Rounded</option>
             <option value="halfCircleBottom">Half Circle - Bottom</option>
+            <option value="bottomRightRounded">Bottom Right Rounded</option>
+            <option value="bottomLeftRounded">Bottom Left Rounded</option>
           </Select>
         </FormControl>
         <FormControl variant="floating" my={3}>

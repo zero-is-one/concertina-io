@@ -7,7 +7,7 @@ import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
 import { useActiveInstrument } from "@/hooks/useActiveInstrument";
 import { useInstruments } from "@/hooks/useInstruments";
 import { useInstrumentAudioSampler } from "@/hooks/useInstrumentAudioSampler";
-
+import { InstrumentPiano } from "../InstrumentPiano/InstrumentPiano";
 export const PageHome = () => {
   const navigate = useNavigate();
   const createInsument = useInstrumentsStore((state) => state.create);
@@ -114,6 +114,7 @@ export const PageHome = () => {
         </Card>
         {activeInstrument && <InstrumentRender instrument={activeInstrument} />}
       </Box>
+      {activeInstrument && <InstrumentPiano instrument={activeInstrument} />}
     </Box>
   );
 };

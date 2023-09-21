@@ -17,4 +17,8 @@ export type InstrumentButton = {
 export type InstrumentButtonFormat =
   | "full"
   | "halfCircleTop"
-  | "halfCircleBottom";
+  | "topRightRounded"
+  | "topLeftRounded"
+  | "halfCircleBottom"
+  | "bottomRightRounded"
+  | "bottomLeftRounded";
