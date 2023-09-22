@@ -1,6 +1,5 @@
 import { useState, createContext } from "react";
 import { InstrumentSchema } from "@/types";
-import { useInstrumentSchemasStore } from "@/stores/InstrumentsSchemasStore";
 
 type InstrumentSchemaContextType = {
   schema: InstrumentSchema;

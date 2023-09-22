@@ -2,16 +2,19 @@ import { useKeyboardShortcutsPressed } from "@/hooks/useKeyboardShortcuts";
 import { Button } from "./Button";
 import { InstrumentSchema } from "@/types";
 import { Tooltip } from "@chakra-ui/react";
-
+import { ShortcutKeys } from "@/types";
+import { InstrumentButtonSchema } from "@/types";
 export const InstrumentRender = ({
   instrumentSchema,
+  activeNotes,
+  onPointerDown,
+  onPointerLost,
 }: {
   instrumentSchema: InstrumentSchema;
+  activeNotes?: string[];
+  onPointerDown?: (buttonSchema: InstrumentButtonSchema) => void;
+  onPointerLost?: (buttonSchema: InstrumentButtonSchema) => void;
 }) => {
-  const pressedKeys = useKeyboardShortcutsPressed(
-    instrumentSchema.buttons.map((button) => button.shortcut)
-  );
-
   if (!instrumentSchema) return null;
 
   //get min/max x and y
@@ -46,8 +49,23 @@ export const InstrumentRender = ({
           >
             <Tooltip hasArrow label={button.shortcut}>
               <Button
-                active={pressedKeys.includes(button.shortcut)}
+                active={activeNotes?.includes(button.note)}
                 shape={button.shape}
+                onPointerDown={(e) => {
+                  e.preventDefault();
+                  if (!onPointerDown) return;
+                  onPointerDown(button);
+                }}
+                onPointerUp={(e) => {
+                  e.preventDefault();
+                  if (!onPointerLost) return;
+                  onPointerLost(button);
+                }}
+                onPointerLeave={(e) => {
+                  e.preventDefault();
+                  if (!onPointerLost) return;
+                  onPointerLost(button);
+                }}
               >
                 {button.label || button.note}
               </Button>

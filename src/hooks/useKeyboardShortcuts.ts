@@ -1,14 +1,7 @@
 import { useRef, useState } from "react";
 import { useKeyPress } from "@/hooks/useKeyPress";
-
+import { ShortcutKeys, ShortcutState } from "@/types";
 type Key = string;
-type ShortcutKeys = string;
-type ShortcutAction = "press" | "release";
-type ShortcutState = {
-  keys: ShortcutKeys;
-  action: ShortcutAction;
-};
-
 type KeyMap = Record<ShortcutKeys, boolean>;
 
 export const useKeyboardShortcuts = (

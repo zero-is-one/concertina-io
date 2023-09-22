@@ -1,30 +1,35 @@
 import styled from "@emotion/styled";
-import { InstrumentSchema } from "@/types";
-import { Piano } from "react-piano";
+import { Piano as ReactPiano } from "react-piano";
 import "react-piano/dist/styles.css";
 import { Note, Range } from "tonal";
-import { useInstrumentButtonsPressed } from "@/hooks/useInstrumentButtonsPressed";
 
-export const InstrumentPiano = ({
-  instrumentSchema,
+export const Piano = ({
+  notes,
+  activeNotes,
+  onPlayNote,
+  onStopNote,
 }: {
-  instrumentSchema: InstrumentSchema;
+  notes: string[];
+  activeNotes?: string[];
+  onPlayNote?: (note: string) => void;
+  onStopNote?: (note: string) => void;
 }) => {
-  const pressed = useInstrumentButtonsPressed(instrumentSchema);
+  const midiNotes: number[] = notes.map((note) => Note.midi(note)) as number[];
+  const activeMidiNotes: number[] = (activeNotes || [])
+    .map((note) => Note.midi(note))
+    .filter((n) => !!n) as number[];
 
-  const notes = instrumentSchema.buttons.map((button) => button.note);
-  const sortedNotesAsMidi = Note.sortedNames(notes).map((note) =>
-    Note.midi(note)
-  );
-  const first: number = sortedNotesAsMidi[0] as number;
-  const last: number = sortedNotesAsMidi[
-    sortedNotesAsMidi.length - 1
-  ] as number;
+  const sortedMidiNotes = (midiNotes || [])
+    .sort((a, b) => a - b)
+    .filter((n) => !!n);
+
+  const first: number = sortedMidiNotes[0];
+  const last: number = sortedMidiNotes[sortedMidiNotes.length - 1];
 
   const allNotesInRange = Range.numeric([first, last]);
 
   const missingNotes = allNotesInRange.filter(
-    (note) => !sortedNotesAsMidi.includes(note)
+    (note) => !sortedMidiNotes.includes(note)
   );
 
   return (
@@ -33,17 +38,25 @@ export const InstrumentPiano = ({
       disabledNotes={missingNotes}
       style={{ height: 100 }}
     >
-      <Piano
-        activeNotes={pressed.map((button) => Note.midi(button.note))}
+      <ReactPiano
+        activeNotes={activeMidiNotes || []}
         noteRange={{
           first,
           last,
         }}
         playNote={(midiNumber) => {
-          // Play a given note - see notes below
+          if (!onPlayNote) return;
+
+          onPlayNote(
+            notes.find((note) => Note.midi(note) === midiNumber) as string
+          );
         }}
         stopNote={(midiNumber) => {
-          // Stop playing a given note - see notes below
+          if (!onStopNote) return;
+
+          onStopNote(
+            notes.find((note) => Note.midi(note) === midiNumber) as string
+          );
         }}
         renderNoteLabel={({
           keyboardShortcut,
@@ -58,7 +71,7 @@ export const InstrumentPiano = ({
                 isAccidental ? "accidental" : "natural"
               }`}
             >
-              {Note.fromMidi(midiNumber as number)}
+              {notes.find((note) => Note.midi(note) === midiNumber)}
             </div>
           );
         }}
@@ -91,7 +104,7 @@ const PianoContainer = styled.div<{
     props.disabledNotes
       .map((note) => {
         return ` 
-        .ReactPiano__Key:nth-child(${props.allNotes.indexOf(note) + 1}) {
+        .ReactPiano__Key:nth-of-type(${props.allNotes.indexOf(note) + 1}) {
                 background: white;
                 box-shadow:none;
                 border: 0.4px solid #ccc;

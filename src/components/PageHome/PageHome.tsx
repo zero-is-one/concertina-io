@@ -6,11 +6,14 @@ import { useInstrumentSchemasStore } from "@/stores/InstrumentsSchemasStore";
 import { useInstrumentSchemas } from "@/hooks/useInstrumentSchemas";
 import { SelectInstrumentSchema } from "./SelectInstrumentSchema";
 import { useInstrumentAudioSampler } from "@/hooks/useInstrumentAudioSampler";
-import { InstrumentPiano } from "../InstrumentPiano/InstrumentPiano";
+import { Piano } from "../Piano/Piano";
 import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
-
+import { Note } from "tonal";
 import { InstrumentSchemaProvider } from "@/contexts/InstrumentSchemaContext";
 import { useInstumentSchemaContext } from "@/hooks/useInstrumentSchemaContext";
+import { ActiveNotesProvider } from "@/contexts/ActiveNotesContext";
+import { ShortcutKeys } from "@/types";
+import { useActiveNotesContext } from "@/hooks/useActiveNoteContext";
 
 export const PageHome = () => {
   const instrumentSchemas = useInstrumentSchemasStore(
@@ -23,12 +26,20 @@ export const PageHome = () => {
 
   return (
     <InstrumentSchemaProvider defaultSchema={schema || instrumentSchemas[0]}>
-      <Content />
+      <ActiveNotesProvider>
+        <Content />
+      </ActiveNotesProvider>
     </InstrumentSchemaProvider>
   );
 };
 
 export const Content = () => {
+  const {
+    notes: activeNotes,
+    add: addActiveNote,
+    remove: removeActiveNote,
+  } = useActiveNotesContext();
+
   const navigate = useNavigate();
   const deleteSchema = useInstrumentSchemasStore((state) => state.delete);
   const createSchema = useInstrumentSchemasStore((state) => state.create);
@@ -63,6 +74,8 @@ export const Content = () => {
     navigate(`/edit/${instrumentSchema.id}`);
   };
 
+  if (!instrumentSchema) return null;
+
   return (
     <Box h="100dvh">
       <Box background={"gray.100"} p={3}>
@@ -93,13 +106,25 @@ export const Content = () => {
             </FormControl>
           </HStack>
         </Card>
-        {instrumentSchema && (
-          <InstrumentRender instrumentSchema={instrumentSchema} />
-        )}
+
+        <InstrumentRender
+          instrumentSchema={instrumentSchema}
+          activeNotes={activeNotes}
+          onPointerDown={(button) => {
+            addActiveNote(button.note);
+          }}
+          onPointerLost={(button) => {
+            removeActiveNote(button.note);
+          }}
+        />
       </Box>
-      {instrumentSchema && (
-        <InstrumentPiano instrumentSchema={instrumentSchema} />
-      )}
+
+      <Piano
+        onPlayNote={addActiveNote}
+        onStopNote={removeActiveNote}
+        notes={instrumentSchema.buttons.map((s) => s.note)}
+        activeNotes={activeNotes}
+      />
     </Box>
   );
 };

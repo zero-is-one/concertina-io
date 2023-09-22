@@ -23,12 +23,9 @@ export type InstrumentButtonShape =
   | "bottomRightRounded"
   | "bottomLeftRounded";
 
-export type InstrumentButtonState = {
-  id: string;
-  isPressed: boolean;
-};
-
-export type InstrumentState = {
-  id: string;
-  buttons: InstrumentButtonState[];
+export type ShortcutKeys = string;
+export type ShortcutAction = "press" | "release";
+export type ShortcutState = {
+  keys: ShortcutKeys;
+  action: ShortcutAction;
 };
