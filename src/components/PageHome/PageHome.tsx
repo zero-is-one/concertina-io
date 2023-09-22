@@ -11,9 +11,10 @@ import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
 import { Note } from "tonal";
 import { InstrumentSchemaProvider } from "@/contexts/InstrumentSchemaContext";
 import { useInstumentSchemaContext } from "@/hooks/useInstrumentSchemaContext";
-import { ActiveNotesProvider } from "@/contexts/ActiveNotesContext";
-import { ShortcutKeys } from "@/types";
-import { useActiveNotesContext } from "@/hooks/useActiveNoteContext";
+import { ActiveButtonsProvider } from "@/contexts/ActiveButtonsContext";
+
+import { useActiveButtonsContext } from "@/hooks/useActiveButtonsContext";
+import { useSchemaButtonShortcutListener } from "@/hooks/useSchemaButtonShortcutListener";
 
 export const PageHome = () => {
   const instrumentSchemas = useInstrumentSchemasStore(
@@ -26,19 +27,19 @@ export const PageHome = () => {
 
   return (
     <InstrumentSchemaProvider defaultSchema={schema || instrumentSchemas[0]}>
-      <ActiveNotesProvider>
+      <ActiveButtonsProvider>
         <Content />
-      </ActiveNotesProvider>
+      </ActiveButtonsProvider>
     </InstrumentSchemaProvider>
   );
 };
 
 export const Content = () => {
   const {
-    notes: activeNotes,
-    add: addActiveNote,
-    remove: removeActiveNote,
-  } = useActiveNotesContext();
+    buttons: activeButtons,
+    add: addActiveButton,
+    remove: removeActiveButton,
+  } = useActiveButtonsContext();
 
   const navigate = useNavigate();
   const deleteSchema = useInstrumentSchemasStore((state) => state.delete);
@@ -49,6 +50,7 @@ export const Content = () => {
   const { isSystemInstrumentSchema, defaultInstrumentSchema } =
     useInstrumentSchemas();
 
+  useSchemaButtonShortcutListener(instrumentSchema);
   //useInstrumentAudioSampler(activeInstrument || defaultInstrument);
 
   const remove = () => {
@@ -109,21 +111,27 @@ export const Content = () => {
 
         <InstrumentRender
           instrumentSchema={instrumentSchema}
-          activeNotes={activeNotes}
-          onPointerDown={(button) => {
-            addActiveNote(button.note);
-          }}
-          onPointerLost={(button) => {
-            removeActiveNote(button.note);
-          }}
+          activeButtons={activeButtons}
+          onPointerDown={addActiveButton}
+          onPointerLost={removeActiveButton}
         />
       </Box>
 
       <Piano
-        onPlayNote={addActiveNote}
-        onStopNote={removeActiveNote}
+        onKeyPress={(note) => {
+          instrumentSchema.buttons.forEach((button) => {
+            if (Note.midi(button.note || "") !== Note.midi(note)) return;
+            addActiveButton(button);
+          });
+        }}
+        onKeyRelease={(note) => {
+          instrumentSchema.buttons.forEach((button) => {
+            if (Note.midi(button.note || "") !== Note.midi(note)) return;
+            removeActiveButton(button);
+          });
+        }}
         notes={instrumentSchema.buttons.map((s) => s.note)}
-        activeNotes={activeNotes}
+        activeNotes={activeButtons.map((button) => button.note)}
       />
     </Box>
   );

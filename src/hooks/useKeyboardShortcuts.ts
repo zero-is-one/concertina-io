@@ -66,12 +66,30 @@ export const useKeyboardShortcuts = (
   });
 };
 
-export const useKeyboardShortcutsPressed = (shortcuts: ShortcutKeys[]) => {
-  const [shortcutStates, setShortcutStates] = useState<ShortcutKeys[]>([]);
+export const useKeyboardShortcutsChanges = (
+  shortcuts: ShortcutKeys[],
+  callback: (state: ShortcutState[]) => void
+) => {
+  const pressedShortcuts = useRef<ShortcutKeys[]>([]);
 
-  useKeyboardShortcuts(shortcuts, (s) => {
-    setShortcutStates(s.filter((s) => s.action === "press").map((s) => s.keys));
+  useKeyboardShortcuts(shortcuts, (state) => {
+    const changes: ShortcutState[] = [];
+    const pressed = state.filter((s) => s.action === "press");
+
+    pressed.forEach((s) => {
+      if (pressedShortcuts.current.includes(s.keys)) return;
+      changes.push(s);
+      pressedShortcuts.current = [...pressedShortcuts.current, s.keys];
+    });
+
+    pressedShortcuts.current.forEach((s) => {
+      if (pressed.some((p) => p.keys === s)) return;
+      pressedShortcuts.current = pressedShortcuts.current.filter(
+        (p) => p !== s
+      );
+      changes.push({ keys: s, action: "release" });
+    });
+
+    callback(changes);
   });
-
-  return shortcutStates;
 };

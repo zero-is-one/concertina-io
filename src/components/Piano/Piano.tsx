@@ -6,13 +6,13 @@ import { Note, Range } from "tonal";
 export const Piano = ({
   notes,
   activeNotes,
-  onPlayNote,
-  onStopNote,
+  onKeyPress,
+  onKeyRelease,
 }: {
   notes: string[];
   activeNotes?: string[];
-  onPlayNote?: (note: string) => void;
-  onStopNote?: (note: string) => void;
+  onKeyPress?: (note: string) => void;
+  onKeyRelease?: (note: string) => void;
 }) => {
   const midiNotes: number[] = notes.map((note) => Note.midi(note)) as number[];
   const activeMidiNotes: number[] = (activeNotes || [])
@@ -44,17 +44,19 @@ export const Piano = ({
           first,
           last,
         }}
-        playNote={(midiNumber) => {
-          if (!onPlayNote) return;
+        playNote={(midiNumber) => {}}
+        stopNote={(midiNumber) => {}}
+        onPlayNoteInput={(midiNumber) => {
+          if (!onKeyPress) return;
 
-          onPlayNote(
+          onKeyPress(
             notes.find((note) => Note.midi(note) === midiNumber) as string
           );
         }}
-        stopNote={(midiNumber) => {
-          if (!onStopNote) return;
+        onStopNoteInput={(midiNumber) => {
+          if (!onKeyRelease) return;
 
-          onStopNote(
+          onKeyRelease(
             notes.find((note) => Note.midi(note) === midiNumber) as string
           );
         }}

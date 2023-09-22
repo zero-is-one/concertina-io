@@ -1,17 +1,15 @@
-import { useKeyboardShortcutsPressed } from "@/hooks/useKeyboardShortcuts";
 import { Button } from "./Button";
 import { InstrumentSchema } from "@/types";
 import { Tooltip } from "@chakra-ui/react";
-import { ShortcutKeys } from "@/types";
 import { InstrumentButtonSchema } from "@/types";
 export const InstrumentRender = ({
   instrumentSchema,
-  activeNotes,
+  activeButtons,
   onPointerDown,
   onPointerLost,
 }: {
   instrumentSchema: InstrumentSchema;
-  activeNotes?: string[];
+  activeButtons?: InstrumentButtonSchema[];
   onPointerDown?: (buttonSchema: InstrumentButtonSchema) => void;
   onPointerLost?: (buttonSchema: InstrumentButtonSchema) => void;
 }) => {
@@ -49,7 +47,7 @@ export const InstrumentRender = ({
           >
             <Tooltip hasArrow label={button.shortcut}>
               <Button
-                active={activeNotes?.includes(button.note)}
+                active={!!activeButtons?.find((b) => b.id === button.id)}
                 shape={button.shape}
                 onPointerDown={(e) => {
                   e.preventDefault();
