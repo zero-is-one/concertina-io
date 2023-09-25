@@ -1,27 +1,27 @@
 import { useKeyboardShortcutsChanges } from "@/hooks/useKeyboardShortcuts";
-import { InstrumentSchema } from "@/types";
-import { useRef } from "react";
 import { useActiveButtonsContext } from "./useActiveButtonsContext";
-export const useSchemaButtonShortcutListener = (
-  instrumentSchema: InstrumentSchema
+import { InstrumentButtonSchema } from "@/types";
+
+export const useActiveButtonsContextShortcutListener = (
+  buttons: InstrumentButtonSchema[]
 ) => {
   const { add: addActiveButton, remove: removeActiveButton } =
     useActiveButtonsContext();
 
-  const shortcuts = instrumentSchema.buttons.map((button) => button.shortcut);
+  const shortcuts = buttons.map((button) => button.shortcut);
 
   useKeyboardShortcutsChanges(shortcuts, (changes) => {
     changes.forEach((change) => {
-      const buttons = instrumentSchema.buttons.filter(
+      const btn: InstrumentButtonSchema[] = buttons.filter(
         (b) => b.shortcut === change.keys
       );
 
       if (change.action === "press") {
-        buttons.forEach(addActiveButton);
+        btn.forEach(addActiveButton);
         return;
       }
 
-      buttons.forEach(removeActiveButton);
+      btn.forEach(removeActiveButton);
     });
   });
 };

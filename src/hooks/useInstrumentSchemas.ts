@@ -12,7 +12,7 @@ export const useInstrumentSchemas = () => {
   };
 
   return {
-    instrumentSchemas: customInstrumentSchemas.concat(systemInstrumentSchemas),
+    instrumentSchemas: [...systemInstrumentSchemas, ...customInstrumentSchemas],
     customInstrumentSchemas,
     systemInstrumentSchemas,
     isSystemInstrumentSchema,

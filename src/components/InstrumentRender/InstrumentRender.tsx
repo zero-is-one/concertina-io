@@ -45,29 +45,27 @@ export const InstrumentRender = ({
               top: `${(button.y - bounds.minY) * unitPercentValY}%`,
             }}
           >
-            <Tooltip hasArrow label={button.shortcut}>
-              <Button
-                active={!!activeButtons?.find((b) => b.id === button.id)}
-                shape={button.shape}
-                onPointerDown={(e) => {
-                  e.preventDefault();
-                  if (!onPointerDown) return;
-                  onPointerDown(button);
-                }}
-                onPointerUp={(e) => {
-                  e.preventDefault();
-                  if (!onPointerLost) return;
-                  onPointerLost(button);
-                }}
-                onPointerLeave={(e) => {
-                  e.preventDefault();
-                  if (!onPointerLost) return;
-                  onPointerLost(button);
-                }}
-              >
-                {button.label || button.note}
-              </Button>
-            </Tooltip>
+            <Button
+              active={!!activeButtons?.find((b) => b.id === button.id)}
+              shape={button.shape}
+              onPointerDown={(e) => {
+                e.preventDefault();
+                if (!onPointerDown) return;
+                onPointerDown(button);
+              }}
+              onPointerUp={(e) => {
+                e.preventDefault();
+                if (!onPointerLost) return;
+                onPointerLost(button);
+              }}
+              onPointerLeave={(e) => {
+                e.preventDefault();
+                if (!onPointerLost) return;
+                onPointerLost(button);
+              }}
+            >
+              {button.label || button.note}
+            </Button>
           </div>
         );
       })}

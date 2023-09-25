@@ -10,7 +10,7 @@ export const useKeyboardShortcuts = (
 ) => {
   const isKeyDownMap = useRef<KeyMap>({});
 
-  const shortcutsSorted: ShortcutState[] = shortcuts
+  const shortcutsSorted: ShortcutState[] = (shortcuts || [])
     .sort((a, b) => {
       if (a.split("+").length !== b.split("+").length) {
         return a.split("+").length - b.split("+").length;

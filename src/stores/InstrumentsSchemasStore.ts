@@ -41,7 +41,7 @@ export const useInstrumentSchemasStore = create<InstrumentsStore>()(
         })),
     }),
     {
-      name: "concertina-instrument-storagev2",
+      name: "concertina-instrument-storagev3",
       storage: createJSONStorage(() => sessionStorage),
     }
   )

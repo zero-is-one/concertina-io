@@ -5,21 +5,23 @@ import logoImage from "@/assets/logo-with-title.svg";
 import { useInstrumentSchemasStore } from "@/stores/InstrumentsSchemasStore";
 import { useInstrumentSchemas } from "@/hooks/useInstrumentSchemas";
 import { SelectInstrumentSchema } from "./SelectInstrumentSchema";
-import { useInstrumentAudioSampler } from "@/hooks/useInstrumentAudioSampler";
+import { useSampler } from "@/hooks/useTone";
+import C4 from "@/assets/C4.mp3";
+import A4 from "@/assets/A4.mp3";
+
 import { Piano } from "../Piano/Piano";
 import { InstrumentRender } from "../InstrumentRender/InstrumentRender";
 import { Note } from "tonal";
 import { InstrumentSchemaProvider } from "@/contexts/InstrumentSchemaContext";
 import { useInstumentSchemaContext } from "@/hooks/useInstrumentSchemaContext";
 import { ActiveButtonsProvider } from "@/contexts/ActiveButtonsContext";
-
 import { useActiveButtonsContext } from "@/hooks/useActiveButtonsContext";
-import { useSchemaButtonShortcutListener } from "@/hooks/useSchemaButtonShortcutListener";
+import { useActiveButtonsContextShortcutListener } from "@/hooks/useActiveButtonsContextShortcutListener";
+import { useActiveButtonsContextNoteChanges } from "@/hooks/useActiveButtonsContextNoteChanges";
 
 export const PageHome = () => {
-  const instrumentSchemas = useInstrumentSchemasStore(
-    (state) => state.instrumentSchemas
-  );
+  const { instrumentSchemas } = useInstrumentSchemas();
+
   const schemaId = useInstrumentSchemasStore(
     (state) => state.selectedInstrumentSchemaId
   );
@@ -35,6 +37,11 @@ export const PageHome = () => {
 };
 
 export const Content = () => {
+  const sampler = useSampler({
+    C4,
+    A4,
+  });
+
   const {
     buttons: activeButtons,
     add: addActiveButton,
@@ -50,7 +57,13 @@ export const Content = () => {
   const { isSystemInstrumentSchema, defaultInstrumentSchema } =
     useInstrumentSchemas();
 
-  useSchemaButtonShortcutListener(instrumentSchema);
+  useActiveButtonsContextShortcutListener(instrumentSchema.buttons);
+  useActiveButtonsContextNoteChanges((changes) => {
+    changes.forEach((state) => {
+      if (state.action === "start") sampler.triggerAttack(state.note);
+      if (state.action === "end") sampler.triggerRelease(state.note);
+    });
+  });
   //useInstrumentAudioSampler(activeInstrument || defaultInstrument);
 
   const remove = () => {

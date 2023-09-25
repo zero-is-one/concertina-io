@@ -27,6 +27,7 @@ export const ActiveButtonsProvider: React.FC<{
           setButtons((buttons) => [...buttons, button]);
         },
         remove: (button) => {
+          //if (!buttons.find((b) => b.id === button.id)) return;
           setButtons((buttons) => buttons.filter((b) => b.id !== button.id));
         },
         clear: () => {
