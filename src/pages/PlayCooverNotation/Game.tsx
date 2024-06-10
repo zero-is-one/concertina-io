@@ -8,8 +8,8 @@ import { gameStateManagerAtom } from "@/atoms/gameStateManager";
 import { isMicActiveAtom } from "@/atoms/mic";
 import { ConcertinaFingeringChart } from "@/components/ConcertinaFingeringChart/ConcertinaFingeringChart";
 import { CooverFingeringChart } from "@/components/CooverFingeringChart/CooverFingeringChart";
-import { DeviceStayAwake } from "@/components/DeviceStayAwake/DeviceStayAwake";
 import { Flashcard } from "@/components/Flashcard/Flashcard";
+import { WakeLock } from "@/components/WakeLock/WakeLock";
 import { FullscreenLayout } from "@/layouts/FullscreenLayout";
 import { Stack, Title } from "@mantine/core";
 import { useAtomValue } from "jotai";
@@ -44,7 +44,7 @@ export const Game = () => {
   }
 
   return (
-    <DeviceStayAwake>
+    <WakeLock>
       <FullscreenLayout>
         <Flashcard
           deck={deck}
@@ -66,6 +66,6 @@ export const Game = () => {
           showBottomSection={showBottomSection}
         />
       </FullscreenLayout>
-    </DeviceStayAwake>
+    </WakeLock>
   );
 };
