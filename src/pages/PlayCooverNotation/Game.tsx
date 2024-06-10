@@ -8,6 +8,7 @@ import { gameStateManagerAtom } from "@/atoms/gameStateManager";
 import { isMicActiveAtom } from "@/atoms/mic";
 import { ConcertinaFingeringChart } from "@/components/ConcertinaFingeringChart/ConcertinaFingeringChart";
 import { CooverFingeringChart } from "@/components/CooverFingeringChart/CooverFingeringChart";
+import { DeviceStayAwake } from "@/components/DeviceStayAwake/DeviceStayAwake";
 import { Flashcard } from "@/components/Flashcard/Flashcard";
 import { FullscreenLayout } from "@/layouts/FullscreenLayout";
 import { Stack, Title } from "@mantine/core";
@@ -43,26 +44,28 @@ export const Game = () => {
   }
 
   return (
-    <FullscreenLayout>
-      <Flashcard
-        deck={deck}
-        topSection={
-          <CooverFingeringChart
-            index={flashcard.index}
-            action={flashcard.action}
-          />
-        }
-        bottomSection={
-          <Stack w="100%" justify="center" align="center">
-            <ConcertinaFingeringChart
+    <DeviceStayAwake>
+      <FullscreenLayout>
+        <Flashcard
+          deck={deck}
+          topSection={
+            <CooverFingeringChart
               index={flashcard.index}
               action={flashcard.action}
             />
-            <Title order={2}>{flashcardNoteName}</Title>
-          </Stack>
-        }
-        showBottomSection={showBottomSection}
-      />
-    </FullscreenLayout>
+          }
+          bottomSection={
+            <Stack w="100%" justify="center" align="center">
+              <ConcertinaFingeringChart
+                index={flashcard.index}
+                action={flashcard.action}
+              />
+              <Title order={2}>{flashcardNoteName}</Title>
+            </Stack>
+          }
+          showBottomSection={showBottomSection}
+        />
+      </FullscreenLayout>
+    </DeviceStayAwake>
   );
 };

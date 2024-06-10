@@ -2,12 +2,15 @@
   "name": "concertina-io",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://zero-is-one.github.io/concertina-io/",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build && cp dist/index.html dist/404.html",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@mantine/core": "^7.9.1",
@@ -24,6 +27,7 @@
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.23.1",
     "tonal": "^6.0.1",
+    "use-stay-awake": "^0.1.7",
     "vite-plugin-inline-css-modules": "^0.0.8"
   },
   "devDependencies": {
@@ -35,6 +39,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "gh-pages": "^6.1.1",
     "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.15.0",
     "postcss-simple-vars": "^7.0.1",
