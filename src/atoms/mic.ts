@@ -124,7 +124,7 @@ const pitchDetectorEffect = atomEffect((get, set) => {
   };
 });
 
-const minClarity = 0.7;
+const minClarity = 0.75;
 const maxPitch = 10000;
 const minPitch = 60;
 

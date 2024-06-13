@@ -5,16 +5,17 @@ import {
   Badge,
   Collapse,
   Group,
+  GroupProps,
   Paper,
   Progress,
   Stack,
-  Text,
 } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import { ReactNode } from "react";
+import { FaExclamationCircle, FaEye, FaStar } from "react-icons/fa";
 import { TbMicrophone2, TbMicrophone2Off, TbNumber } from "react-icons/tb";
 
-const toolbarHeight = 42;
+const toolbarHeight = 44;
 const gap = 10;
 
 export const Flashcard = ({
@@ -39,6 +40,8 @@ export const Flashcard = ({
         gap={0}
         bg="gray.1"
       >
+        <Toolbar>CONCERTINA.IO</Toolbar>
+
         <Stack flex={1} w={"100%"} gap={gap} justify="center" align="center">
           <Card>
             <Stack h="100%" justify="center" align="center">
@@ -60,37 +63,34 @@ export const Flashcard = ({
             </Card>
           </Collapse>
         </Stack>
-        <Group
-          w="100%"
-          h={toolbarHeight}
-          style={{ overflow: "hidden" }}
-          justify="space-between"
-          align="center"
-          pos="relative"
-        >
+        <Toolbar>
           <MicBadge />
 
           <Group
             pos={"absolute"}
             left={"50%"}
             style={{ transform: "translateX(-50%)" }}
+            gap={"xs"}
           >
-            <Badge variant="transparent" size="xl">
-              <Group>
-                <Text c="red" inherit>
-                  {deck.stats.incorrect}
-                </Text>
-                <Text c="green" inherit>
-                  {deck.stats.correct}
-                </Text>
-                <Text inherit>{deck.stats.views}</Text>
-              </Group>
+            <Badge size="lg" color="green" leftSection={<FaStar />}>
+              {deck.stats.correct}
+            </Badge>
+            <Badge size="lg" color="red" leftSection={<FaExclamationCircle />}>
+              {deck.stats.incorrect}
+            </Badge>
+            <Badge size="lg" color="gray" leftSection={<FaEye />}>
+              {deck.stats.views}
             </Badge>
           </Group>
-          <Badge variant="transparent" size="xl" leftSection={<TbNumber />}>
+          <Badge
+            p={0}
+            variant="transparent"
+            size="lg"
+            leftSection={<TbNumber />}
+          >
             {deck.stats.seen}/{deck.stats.total}
           </Badge>
-        </Group>
+        </Toolbar>
       </Stack>
       <Countdown />
     </>
@@ -101,18 +101,14 @@ const MicBadge = () => {
   const micSustainedNoteName = useAtomValue(micSustainedNoteNameAtom);
   const isMicActive = useAtomValue(isMicActiveAtom);
 
-  if (!isMicActive)
-    return (
-      <Badge
-        variant="transparent"
-        size="xl"
-        leftSection={<TbMicrophone2Off />}
-      />
-    );
-
   return (
-    <Badge variant="transparent" size="xl" leftSection={<TbMicrophone2 />}>
-      {micSustainedNoteName || "--"}
+    <Badge
+      p={0}
+      variant="transparent"
+      size="xl"
+      leftSection={!isMicActive ? <TbMicrophone2Off /> : <TbMicrophone2 />}
+    >
+      {!isMicActive ? "X" : micSustainedNoteName || "--"}
     </Badge>
   );
 };
@@ -134,12 +130,32 @@ const Countdown = () => {
   );
 };
 
+const Toolbar = ({
+  children,
+  ...props
+}: { children: ReactNode } & GroupProps) => {
+  return (
+    <Group
+      w="100%"
+      h={toolbarHeight}
+      style={{ overflow: "hidden" }}
+      justify="space-between"
+      align="center"
+      pos="relative"
+      {...props}
+      px={"sm"}
+    >
+      {children}
+    </Group>
+  );
+};
+
 const Card = ({ children }: { children: ReactNode }) => {
   return (
     <Paper
       style={{
-        width: `calc(50dvh - ${toolbarHeight / 2}px - ${gap * 1.5}px)`,
-        height: `calc(50dvh - ${toolbarHeight / 2}px - ${gap * 1.5}px)`,
+        width: `calc(50dvh - ${toolbarHeight}px - ${gap / 2}px)`,
+        height: `calc(50dvh - ${toolbarHeight}px - ${gap / 2}px)`,
       }}
       p="sm"
       withBorder

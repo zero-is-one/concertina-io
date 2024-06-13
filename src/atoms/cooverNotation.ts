@@ -31,20 +31,21 @@ export const dispatchStartAtom = atom(
           views: 0,
           correct: 0,
           incorrect: 0,
+          streak: 0,
         },
       };
 
       flashcards.push({
         id: Math.random().toString(35).slice(-6),
         ...card,
-        action: "push",
-        noteName: button.push,
+        action: "pull",
+        noteName: button.pull,
       });
       flashcards.push({
         id: Math.random().toString(35).slice(-6),
         ...card,
-        action: "pull",
-        noteName: button.pull,
+        action: "push",
+        noteName: button.push,
       });
     });
 

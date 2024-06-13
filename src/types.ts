@@ -23,6 +23,7 @@ export type FlashCard = {
     views: number;
     correct: number;
     incorrect: number;
+    streak: number;
   };
 };
 
