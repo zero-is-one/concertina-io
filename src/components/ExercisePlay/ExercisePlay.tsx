@@ -24,9 +24,9 @@ export const ExercisePlay = () => {
 
   useEffect(() => {
     if (deck.flashcards.length <= 0) {
-      navigate("/coover-notation");
+      navigate(`/exercise/${exerciseId}/start`);
     }
-  }, [deck.flashcards.length, navigate]);
+  }, [deck.flashcards.length, navigate, exerciseId]);
 
   if (!exercise) return null;
   if (deck.flashcards.length === 0) return null;

@@ -2,6 +2,7 @@ import { isMicActiveAtom, micSustainedNoteNameAtom } from "@/atoms/mic";
 import { elapsedTimeAtom } from "@/atoms/timer";
 import { Deck } from "@/types";
 import {
+  ActionIcon,
   Badge,
   Collapse,
   Group,
@@ -9,11 +10,18 @@ import {
   Paper,
   Progress,
   Stack,
+  Text,
 } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import { ReactNode } from "react";
-import { FaExclamationCircle, FaEye, FaStar } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaExclamationCircle,
+  FaEye,
+  FaStar,
+} from "react-icons/fa";
 import { TbMicrophone2, TbMicrophone2Off, TbNumber } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 const toolbarHeight = 44;
 const gap = 10;
@@ -40,7 +48,24 @@ export const Flashcard = ({
         gap={0}
         bg="gray.1"
       >
-        <Toolbar>CONCERTINA.IO</Toolbar>
+        <Toolbar>
+          <ActionIcon variant="transparent" size={"sm"} component={Link} to="/">
+            <FaArrowLeft width={"100%"} />
+          </ActionIcon>
+          <Text
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              fontWeight: 500,
+            }}
+          >
+            CONCERTINA.io
+          </Text>
+        </Toolbar>
 
         <Stack flex={1} w={"100%"} gap={gap} justify="center" align="center">
           <Card>
