@@ -3,10 +3,10 @@ import {
   indexToCooverNotationMap,
 } from "@/concertinas";
 
-export const CooverFingeringChart = ({
-  index,
-  action,
-}: AngloConcertinaButtonMarker) => {
+export const CooverFingeringChart = (
+  buttonMarker: AngloConcertinaButtonMarker,
+) => {
+  const { index, action } = buttonMarker;
   const label = indexToCooverNotationMap[index];
   const isLeftHand = Math.floor(index / 5) % 2 === 0;
 
