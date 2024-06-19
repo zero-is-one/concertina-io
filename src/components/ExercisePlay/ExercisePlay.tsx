@@ -1,9 +1,4 @@
-import {
-  deckAtom,
-  flashcardAtom,
-  flashcardNoteNameAtom,
-  showBottomSectionAtom,
-} from "@/atoms/deck";
+import { deckAtom, flashcardAtom, showBottomSectionAtom } from "@/atoms/deck";
 import { gameStateManagerAtom } from "@/atoms/gameStateManager";
 import { isMicActiveAtom } from "@/atoms/mic";
 import { ConcertinaFingeringChart } from "@/components/ConcertinaFingeringChart/ConcertinaFingeringChart";
@@ -11,23 +6,23 @@ import { CooverFingeringChart } from "@/components/CooverFingeringChart/CooverFi
 import { Flashcard } from "@/components/Flashcard/Flashcard";
 import { WakeLock } from "@/components/WakeLock/WakeLock";
 import { FullscreenLayout } from "@/layouts/FullscreenLayout";
-import { Stack, Title } from "@mantine/core";
+import { Group, Stack, Title } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
+import { BsMusicNoteBeamed } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-export const Game = () => {
+export const ExercisePlay = () => {
   const navigate = useNavigate();
   useAtomValue(gameStateManagerAtom);
   const deck = useAtomValue(deckAtom);
   const flashcard = useAtomValue(flashcardAtom);
-  const flashcardNoteName = useAtomValue(flashcardNoteNameAtom);
   const isMicActive = useAtomValue(isMicActiveAtom);
   const showBottomSection = useAtomValue(showBottomSectionAtom);
 
   useEffect(() => {
     if (deck.flashcards.length <= 0) {
-      navigate("/coover-notation/start");
+      navigate("/coover-notation");
     }
   }, [deck.flashcards.length, navigate]);
 
@@ -50,17 +45,20 @@ export const Game = () => {
           deck={deck}
           topSection={
             <CooverFingeringChart
-              index={flashcard.index}
-              action={flashcard.action}
+              index={flashcard.buttonMarker.index}
+              action={flashcard.buttonMarker.action}
             />
           }
           bottomSection={
             <Stack w="100%" justify="center" align="center">
               <ConcertinaFingeringChart
-                index={flashcard.index}
-                action={flashcard.action}
+                index={flashcard.buttonMarker.index}
+                action={flashcard.buttonMarker.action}
               />
-              <Title order={2}>{flashcardNoteName}</Title>
+              <Group gap={"xs"} justify="center" align="center">
+                <BsMusicNoteBeamed size={28} />
+                <Title order={2}>{flashcard.noteName}</Title>
+              </Group>
             </Stack>
           }
           showBottomSection={showBottomSection}

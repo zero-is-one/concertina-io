@@ -1,20 +1,7 @@
 import { angloConcertinas, indexToCooverNotationMap } from "@/concertinas";
-import { FlashCard, GameSettingOrder, GameSettingPlacement } from "@/types";
+import { FlashCard, GameSettings } from "@/types";
 import { atom } from "jotai";
 import { flashcardsAtom } from "./deck";
-
-export type GameSettings = {
-  concertinaId: (typeof angloConcertinas)[number]["id"];
-  order: GameSettingOrder;
-  placement: GameSettingPlacement;
-};
-
-export const gameSettingsAtom = atom<GameSettings>({} as GameSettings);
-
-export const concertinaAtom = atom((get) => {
-  const concertinaId = get(gameSettingsAtom).concertinaId;
-  return angloConcertinas.find((c) => c.id === concertinaId);
-});
 
 export const dispatchStartAtom = atom(
   null,
@@ -25,7 +12,6 @@ export const dispatchStartAtom = atom(
     const flashcards: FlashCard[] = [];
     concertina.buttons.forEach((button, index) => {
       const card = {
-        index,
         placement,
         stats: {
           views: 0,
@@ -38,28 +24,38 @@ export const dispatchStartAtom = atom(
       flashcards.push({
         id: Math.random().toString(35).slice(-6),
         ...card,
-        action: "pull",
+        buttonMarker: {
+          index,
+          action: "pull",
+        },
         noteName: button.pull,
       });
       flashcards.push({
         id: Math.random().toString(35).slice(-6),
         ...card,
-        action: "push",
+        buttonMarker: {
+          index,
+          action: "push",
+        },
         noteName: button.push,
       });
     });
 
     if (order === "Random") {
       flashcards.sort(() => Math.random() - 0.5);
-    } else {
+    }
+    if (order === "Best") {
       flashcards.sort(
         (a, b) =>
-          Number(indexToCooverNotationMap[a.index].replace("a", "999")) -
-          Number(indexToCooverNotationMap[b.index].replace("a", "999")),
+          Number(
+            indexToCooverNotationMap[a.buttonMarker.index].replace("a", "999"),
+          ) -
+          Number(
+            indexToCooverNotationMap[b.buttonMarker.index].replace("a", "999"),
+          ),
       );
     }
 
     set(flashcardsAtom, flashcards);
-    set(gameSettingsAtom, { concertinaId, order, placement });
   },
 );

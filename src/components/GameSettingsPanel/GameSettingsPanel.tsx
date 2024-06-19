@@ -1,8 +1,12 @@
-import { GameSettings, dispatchStartAtom } from "@/atoms/cooverNotation";
 import { requestMicAtom } from "@/atoms/mic";
 import { angloConcertinas } from "@/concertinas";
 import { FullscreenLayout } from "@/layouts/FullscreenLayout";
-import { GameSettingOrder, GameSettingPlacement } from "@/types";
+import {
+  GameSettingOrder,
+  GameSettingPlacement,
+  GameSettings,
+  Note,
+} from "@/types";
 import {
   Box,
   Button,
@@ -15,24 +19,28 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useSetAtom } from "jotai";
-import { useNavigate } from "react-router-dom";
 
-export const MainMenu = () => {
-  const navigate = useNavigate();
-  const start = useSetAtom(dispatchStartAtom);
+export const GameSettingsPanel = ({
+  title = "Game Title",
+  onSubmit,
+}: {
+  title?: string;
+  onSubmit: (values: GameSettings) => void;
+}) => {
   const form = useForm({
     initialValues: {
       concertinaId: angloConcertinas[0].id,
       order: "Best" satisfies GameSettingOrder,
       placement: "Spaced Repetition" satisfies GameSettingPlacement,
+      key: "C" satisfies Note,
     } satisfies GameSettings,
   });
+
   const requestMic = useSetAtom(requestMicAtom);
 
-  const onSubmit = (values: GameSettings) => {
-    start(values);
-    requestMic();
-    navigate("/coover-notation/play");
+  const onFormSubmit = async (values: GameSettings) => {
+    await requestMic();
+    onSubmit(values);
   };
 
   return (
@@ -40,10 +48,10 @@ export const MainMenu = () => {
       <Box p="md">
         <Paper withBorder p={"md"}>
           <Stack>
-            <Title order={2}>Coover Notation</Title>
-            <Text>Learn the concertina using the Coover Notation System</Text>
+            <Title order={2}>{title}</Title>
+            <Text>Learn the concertina using {title}</Text>
 
-            <form onSubmit={form.onSubmit(onSubmit)}>
+            <form onSubmit={form.onSubmit(onFormSubmit)}>
               <Stack>
                 <Select
                   {...form.getInputProps("concertinaId")}
@@ -76,7 +84,7 @@ export const MainMenu = () => {
                 />
 
                 <Group justify="flex-end" mt="md">
-                  <Button type="submit">Submit</Button>
+                  <Button type="submit">Play</Button>
                 </Group>
               </Stack>
             </form>

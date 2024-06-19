@@ -1,7 +1,12 @@
-import { indexToCooverNotationMap } from "@/concertinas";
-import { ConcertinaAction } from "@/types";
+import {
+  AngloConcertinaButtonMarker,
+  indexToCooverNotationMap,
+} from "@/concertinas";
 
-export const CooverFingeringChart = ({ index, action }: ConcertinaAction) => {
+export const CooverFingeringChart = ({
+  index,
+  action,
+}: AngloConcertinaButtonMarker) => {
   const label = indexToCooverNotationMap[index];
   const isLeftHand = Math.floor(index / 5) % 2 === 0;
 

@@ -1,9 +1,9 @@
-import { ConcertinaAction } from "@/types";
+import { AngloConcertinaButtonMarker } from "@/concertinas";
 
 export const ConcertinaFingeringChart = ({
   index,
   action,
-}: ConcertinaAction) => {
+}: AngloConcertinaButtonMarker) => {
   const color = action === "pull" ? "grape" : "orange";
 
   return (

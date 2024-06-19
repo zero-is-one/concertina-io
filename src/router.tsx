@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import { HomePage } from "./pages/HomePage/HomePage";
-import { Game } from "./pages/PlayCooverNotation/Game";
-import { MainMenu } from "./pages/PlayCooverNotation/MainMenu";
+import { ExercisePlay } from "./components/ExercisePlay/ExercisePlay";
+import { ExerciseStart } from "./components/ExerciseStart/ExerciseStart";
+import { HomePage } from "./components/HomePage/HomePage";
 
 export const router = createBrowserRouter(
   [
@@ -10,17 +10,12 @@ export const router = createBrowserRouter(
       element: <HomePage />,
     },
     {
-      path: "coover-notation",
-      children: [
-        {
-          path: "start",
-          element: <MainMenu />,
-        },
-        {
-          path: "play",
-          element: <Game />,
-        },
-      ],
+      path: "/exercise/:exerciseId/start",
+      element: <ExerciseStart />,
+    },
+    {
+      path: "/exercise/:exerciseId/play",
+      element: <ExercisePlay />,
     },
     {
       path: "*",

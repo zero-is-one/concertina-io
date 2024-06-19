@@ -1,6 +1,5 @@
 import { Deck, FlashCard } from "@/types";
 import { atom } from "jotai";
-import { concertinaAtom } from "./cooverNotation";
 import { isCompleteAtom as isTimerCompleteAtom } from "./timer";
 
 export const flashcardsAtom = atom<FlashCard[]>([]);
@@ -18,18 +17,6 @@ export const setterFlashcardAtom = atom(
     });
   },
 );
-
-export const flashcardNoteNameAtom = atom((get) => {
-  const concertina = get(concertinaAtom);
-
-  if (!concertina) return null;
-
-  const flashcard = get(flashcardAtom);
-  if (!flashcard) return null;
-
-  const button = concertina.buttons[flashcard.index];
-  return flashcard.action === "push" ? button.push : button.pull;
-});
 
 const defaultStats = {
   views: 0,

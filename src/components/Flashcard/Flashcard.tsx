@@ -70,15 +70,23 @@ export const Flashcard = ({
             pos={"absolute"}
             left={"50%"}
             style={{ transform: "translateX(-50%)" }}
-            gap={"xs"}
+            gap={4}
+            w={"100%"}
+            justify="center"
+            align="center"
           >
-            <Badge size="lg" color="green" leftSection={<FaStar />}>
+            <Badge w={68} size="lg" color="green" leftSection={<FaStar />}>
               {deck.stats.correct}
             </Badge>
-            <Badge size="lg" color="red" leftSection={<FaExclamationCircle />}>
+            <Badge
+              w={68}
+              size="lg"
+              color="red"
+              leftSection={<FaExclamationCircle />}
+            >
               {deck.stats.incorrect}
             </Badge>
-            <Badge size="lg" color="gray" leftSection={<FaEye />}>
+            <Badge w={68} size="lg" color="gray" leftSection={<FaEye />}>
               {deck.stats.views}
             </Badge>
           </Group>

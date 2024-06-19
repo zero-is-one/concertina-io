@@ -1,5 +1,7 @@
-type Note = "C" | "C#" | "D" | "D#" | "E" | "F" | "F#" | "G" | "G#" | "A" | "A#" | "B" | "Bb"; // prettier-ignore
-type Octave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+import { AngloConcertinaButtonMarker, angloConcertinas } from "./concertinas";
+
+export type Note = "C" | "C#" | "D" | "D#" | "E" | "F" | "F#" | "G" | "G#" | "A" | "A#" | "B" | "Bb"; // prettier-ignore
+export type Octave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export type NoteWithOctave = `${Note}${Octave}`;
 
 export const GameSettingOrder = ["Best", "Random"] as const;
@@ -13,11 +15,17 @@ export const GameSettingPlacement = [
 
 export type GameSettingPlacement = (typeof GameSettingPlacement)[number];
 
+export type GameSettings = {
+  concertinaId: (typeof angloConcertinas)[number]["id"];
+  order: GameSettingOrder;
+  placement: GameSettingPlacement;
+  key?: string;
+};
+
 export type FlashCard = {
   id: string;
   noteName: NoteWithOctave;
-  index: number;
-  action: "push" | "pull";
+  buttonMarker: AngloConcertinaButtonMarker;
   placement: GameSettingPlacement;
   stats: {
     views: number;
@@ -39,5 +47,3 @@ export type Deck = {
   flashcards: FlashCard[];
   stats: DeckStats;
 };
-
-export type ConcertinaAction = { index: number; action: "push" | "pull" };

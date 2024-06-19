@@ -2,12 +2,7 @@ import { FlashCard } from "@/types";
 import { isNoteNameEqual } from "@/utils/note";
 import { atom } from "jotai";
 import { atomEffect } from "jotai-effect";
-import {
-  flashcardAtom,
-  flashcardNoteNameAtom,
-  flashcardsAtom,
-  setterFlashcardAtom,
-} from "./deck";
+import { flashcardAtom, flashcardsAtom, setterFlashcardAtom } from "./deck";
 import { micSustainedNoteNameAtom } from "./mic";
 import {
   isCompleteAtom as isTimerCompleteAtom,
@@ -53,7 +48,7 @@ export const onNewFlashcardEffect = atomEffect((get, set) => {
 
 export const onCorrectNoteEffect = atomEffect((get, set) => {
   const micNoteName = get(micSustainedNoteNameAtom);
-  const desiredNoteName = get(flashcardNoteNameAtom);
+  const desiredNoteName = get(flashcardAtom)?.noteName;
   if (micNoteName === null) return;
   if (desiredNoteName === null) return;
   if (!isNoteNameEqual(micNoteName, desiredNoteName)) return;

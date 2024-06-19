@@ -1,14 +1,17 @@
 import { NoteWithOctave } from "./types";
 
-type AngloConcertinaButton = {
-  push: NoteWithOctave;
-  pull: NoteWithOctave;
-};
-
 export type AngloConcertina = {
   id: string;
   title: string;
-  buttons: AngloConcertinaButton[];
+  buttons: {
+    push: NoteWithOctave;
+    pull: NoteWithOctave;
+  }[];
+};
+
+export type AngloConcertinaButtonMarker = {
+  index: number;
+  action: "push" | "pull";
 };
 
 export const angloConcertinas: AngloConcertina[] = [
