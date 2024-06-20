@@ -1,10 +1,12 @@
 import { AngloConcertinaButtonMarker } from "@/concertinas";
 
 export const ConcertinaFingeringChart = ({
-  index,
-  action,
-}: AngloConcertinaButtonMarker) => {
-  const color = action === "pull" ? "grape" : "orange";
+  buttonMarker,
+}: {
+  buttonMarker: AngloConcertinaButtonMarker;
+}) => {
+  const { action, index } = buttonMarker;
+  const color = action === "pull" ? "blue" : "red";
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 74">

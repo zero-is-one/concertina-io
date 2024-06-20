@@ -49,10 +49,7 @@ export const ExercisePlay = () => {
           topSection={exercise.cardFrontComponent(flashcard.buttonMarker)}
           bottomSection={
             <Stack w="100%" justify="center" align="center">
-              <ConcertinaFingeringChart
-                index={flashcard.buttonMarker.index}
-                action={flashcard.buttonMarker.action}
-              />
+              <ConcertinaFingeringChart buttonMarker={flashcard.buttonMarker} />
               <Group gap={"xs"} justify="center" align="center">
                 <BsMusicNoteBeamed size={28} />
                 <Title order={2}>{flashcard.noteName}</Title>
