@@ -1,5 +1,5 @@
 import { Concertina, ConcertinaAction } from "@/concertinas";
-import { Box, Stack, Text } from "@mantine/core";
+import { Box, Stack, Title } from "@mantine/core";
 import { SingleNoteSheetMusic } from "../SingleNoteSheetMusic/SingleNoteSheetMusic";
 
 export const ConcertinaSheetMusicHintChart = ({
@@ -12,11 +12,11 @@ export const ConcertinaSheetMusicHintChart = ({
   const noteName = concertina.buttons[action.index][action.bellows];
 
   return (
-    <Stack justify="center" align="center">
+    <Stack gap={0} justify="center" align="center">
       <Box w="85%">
         <SingleNoteSheetMusic noteName={noteName} />
       </Box>
-      <Text fz={40}>{action.bellows === "pull" ? "Pull" : "Push"}</Text>
+      <Title order={1}>{action.bellows === "pull" ? "PULL" : "PUSH"}</Title>
     </Stack>
   );
 };

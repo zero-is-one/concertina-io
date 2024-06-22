@@ -6,10 +6,9 @@ import { Flashcard } from "@/components/Flashcard/Flashcard";
 import { WakeLock } from "@/components/WakeLock/WakeLock";
 import { exercises } from "@/exercises";
 import { FullscreenLayout } from "@/layouts/FullscreenLayout";
-import { Group, Stack, Title } from "@mantine/core";
+import { Stack, Title } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
-import { BsMusicNoteBeamed } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 
 export const ExercisePlay = () => {
@@ -57,10 +56,7 @@ export const ExercisePlay = () => {
               p={"xs"}
             >
               <ConcertinaFingeringChart {...flashcard} />
-              <Group gap={"xs"} justify="center" align="center">
-                <BsMusicNoteBeamed size={28} />
-                <Title order={2}>{flashcard.noteName}</Title>
-              </Group>
+              <Title order={1}>{flashcard.noteName}</Title>
             </Stack>
           }
           showBottomSection={showBottomSection}

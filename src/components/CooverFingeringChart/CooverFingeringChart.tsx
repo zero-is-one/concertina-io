@@ -53,7 +53,12 @@ export const CooverFingeringChart = ({
   };
 
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 250">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 250"
+      width={"100%"}
+      height={"100%"}
+    >
       <path
         d="M105.59 342.482h85.99v2.646h-85.99z"
         style={pathStyle1}

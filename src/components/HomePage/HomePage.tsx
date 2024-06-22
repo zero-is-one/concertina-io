@@ -1,4 +1,5 @@
 import { exercises } from "@/exercises";
+import { FullscreenLayout } from "@/layouts/FullscreenLayout";
 import {
   Anchor,
   Card,
@@ -14,28 +15,32 @@ import { Link } from "react-router-dom";
 
 export const HomePage = () => {
   return (
-    <Container py="sm">
-      <Center>
-        <Stack gap="xs">
-          <Title ta={"center"} order={4}>
-            Concertina.io
-          </Title>
-          <Title ta={"center"} order={5}>
-            A web app for learning the concertina
-          </Title>
+    <FullscreenLayout justify="flex-start">
+      <Container py="sm">
+        <Center>
+          <Stack gap={"lg"}>
+            <Stack gap={0}>
+              <Title ta={"center"} order={4}>
+                CONCERTINA.io
+              </Title>
+              <Title ta={"center"} order={5}>
+                A web app for learning the concertina
+              </Title>
+            </Stack>
 
-          {exercises.map((game) => (
-            <Panel
-              key={game.id}
-              title={game.name}
-              description="Learn the concertina using the Coover Notation System"
-              link={`/exercise/${game.id}/start`}
-              imgSrc={game.iconImgSrc}
-            />
-          ))}
-        </Stack>
-      </Center>
-    </Container>
+            {exercises.map((game) => (
+              <Panel
+                key={game.id}
+                title={game.name}
+                description="Learn the concertina using the Coover Notation System"
+                link={`/exercise/${game.id}/start`}
+                imgSrc={game.iconImgSrc}
+              />
+            ))}
+          </Stack>
+        </Center>
+      </Container>
+    </FullscreenLayout>
   );
 };
 

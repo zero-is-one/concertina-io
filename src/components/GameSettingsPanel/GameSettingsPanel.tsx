@@ -69,7 +69,7 @@ export const GameSettingsPanel = ({
                   {...form.getInputProps("order")}
                   label="Order"
                   data={GameSettingOrder}
-                  w={160}
+                  w={170}
                   withCheckIcon={false}
                   allowDeselect={false}
                 />
@@ -78,7 +78,7 @@ export const GameSettingsPanel = ({
                   {...form.getInputProps("placement")}
                   label="Placement"
                   data={GameSettingPlacement}
-                  w={160}
+                  w={170}
                   withCheckIcon={false}
                   allowDeselect={false}
                 />

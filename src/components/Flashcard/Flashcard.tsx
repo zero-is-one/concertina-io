@@ -46,7 +46,6 @@ export const Flashcard = ({
         style={{ overflow: "hidden" }}
         w="100%"
         gap={0}
-        bg="gray.1"
       >
         <Toolbar>
           <ActionIcon variant="transparent" size={"sm"} component={Link} to="/">
