@@ -68,24 +68,10 @@ export const Flashcard = ({
         </Toolbar>
 
         <Stack flex={1} w={"100%"} gap={gap} justify="center" align="center">
-          <Card>
-            <Stack h="100%" justify="center" align="center">
-              {topSection}
-            </Stack>
-          </Card>
+          <Card>{topSection}</Card>
 
           <Collapse in={!!showBottomSection}>
-            <Card>
-              <Stack
-                h="100%"
-                w="100%"
-                justify="center"
-                align="center"
-                style={{ opacity: showBottomSection ? 1 : 0 }}
-              >
-                {bottomSection}
-              </Stack>
-            </Card>
+            <Card>{bottomSection}</Card>
           </Collapse>
         </Stack>
         <Toolbar>

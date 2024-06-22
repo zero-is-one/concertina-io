@@ -48,7 +48,14 @@ export const ExercisePlay = () => {
           deck={deck}
           topSection={exercise.cardFrontComponent(flashcard)}
           bottomSection={
-            <Stack w="100%" justify="center" align="center">
+            <Stack
+              h="100%"
+              w="100%"
+              justify="center"
+              align="center"
+              style={{ opacity: showBottomSection ? 1 : 0 }}
+              p={"xs"}
+            >
               <ConcertinaFingeringChart {...flashcard} />
               <Group gap={"xs"} justify="center" align="center">
                 <BsMusicNoteBeamed size={28} />
