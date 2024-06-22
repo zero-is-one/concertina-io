@@ -1,4 +1,4 @@
-import { angloConcertinas, indexToCooverNotationMap } from "@/concertinas";
+import { concertinas, indexToCooverNotationMap } from "@/concertinas";
 import { FlashCard, GameSettings } from "@/types";
 import { atom } from "jotai";
 import { flashcardsAtom } from "./deck";
@@ -6,13 +6,14 @@ import { flashcardsAtom } from "./deck";
 export const dispatchStartAtom = atom(
   null,
   (_get, set, { concertinaId, order, placement }: GameSettings) => {
-    const concertina = angloConcertinas.find((c) => c.id === concertinaId);
+    const concertina = concertinas.find((c) => c.id === concertinaId);
     if (!concertina) throw new Error(`Concertina not found: ${concertinaId}`);
 
     const flashcards: FlashCard[] = [];
     concertina.buttons.forEach((button, index) => {
       const card = {
         placement,
+        concertina,
         stats: {
           views: 0,
           correct: 0,
@@ -24,18 +25,18 @@ export const dispatchStartAtom = atom(
       flashcards.push({
         id: Math.random().toString(35).slice(-6),
         ...card,
-        buttonMarker: {
+        action: {
           index,
-          action: "pull",
+          bellows: "pull",
         },
         noteName: button.pull,
       });
       flashcards.push({
         id: Math.random().toString(35).slice(-6),
         ...card,
-        buttonMarker: {
+        action: {
           index,
-          action: "push",
+          bellows: "push",
         },
         noteName: button.push,
       });
@@ -47,12 +48,8 @@ export const dispatchStartAtom = atom(
     if (order === "Best") {
       flashcards.sort(
         (a, b) =>
-          Number(
-            indexToCooverNotationMap[a.buttonMarker.index].replace("a", "999"),
-          ) -
-          Number(
-            indexToCooverNotationMap[b.buttonMarker.index].replace("a", "999"),
-          ),
+          Number(indexToCooverNotationMap[a.action.index].replace("a", "999")) -
+          Number(indexToCooverNotationMap[b.action.index].replace("a", "999")),
       );
     }
 

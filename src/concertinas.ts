@@ -1,20 +1,21 @@
 import { NoteWithOctave } from "./types";
 
-export type AngloConcertina = {
+export type ConcertinaBellows = "push" | "pull";
+
+export type Concertina = {
   id: string;
   title: string;
   buttons: {
-    push: NoteWithOctave;
-    pull: NoteWithOctave;
+    [key in ConcertinaBellows]: NoteWithOctave;
   }[];
 };
 
-export type AngloConcertinaButtonMarker = {
+export type ConcertinaAction = {
   index: number;
-  action: "push" | "pull";
+  bellows: "push" | "pull";
 };
 
-export const angloConcertinas: AngloConcertina[] = [
+export const concertinas: Concertina[] = [
   {
     id: "c/g Wheatstone 30 button anglo",
     title: "C/G Wheatstone 30 Button Anglo",

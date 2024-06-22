@@ -1,12 +1,11 @@
-import {
-  AngloConcertinaButtonMarker,
-  indexToCooverNotationMap,
-} from "@/concertinas";
+import { ConcertinaAction, indexToCooverNotationMap } from "@/concertinas";
 
-export const CooverFingeringChart = (
-  buttonMarker: AngloConcertinaButtonMarker,
-) => {
-  const { index, action } = buttonMarker;
+export const CooverFingeringChart = ({
+  action,
+}: {
+  action: ConcertinaAction;
+}) => {
+  const { index, bellows } = action;
   const label = indexToCooverNotationMap[index];
   const isLeftHand = Math.floor(index / 5) % 2 === 0;
 
@@ -83,7 +82,7 @@ export const CooverFingeringChart = (
         </text>
       )}
 
-      {action === "pull" && (
+      {bellows === "pull" && (
         <path
           d="M127.153 224.445h42.862v2.646h-42.862z"
           style={pathStyle2}

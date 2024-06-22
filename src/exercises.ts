@@ -3,7 +3,7 @@ import sheetMusicIcon from "@/assets/sheetMusicIcon.png";
 import { WritableAtom } from "jotai";
 import { dispatchStartAtom } from "./atoms/cooverNotation";
 import { CooverFingeringChart } from "./components/CooverFingeringChart/CooverFingeringChart";
-import { AngloConcertinaButtonMarker } from "./concertinas";
+import { ConcertinaAction } from "./concertinas";
 import { GameSettings } from "./types";
 
 type Exercise = {
@@ -11,9 +11,7 @@ type Exercise = {
   name: string;
   iconImgSrc: string;
   dispatchStartAtom: WritableAtom<null, [GameSettings], void>;
-  cardFrontComponent: (
-    buttonMarker: AngloConcertinaButtonMarker,
-  ) => JSX.Element;
+  cardFrontComponent: (props: { action: ConcertinaAction }) => JSX.Element;
 };
 
 export const exercises: Exercise[] = [

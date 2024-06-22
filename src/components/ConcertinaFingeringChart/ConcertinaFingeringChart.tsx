@@ -1,12 +1,12 @@
-import { AngloConcertinaButtonMarker } from "@/concertinas";
+import { ConcertinaAction } from "@/concertinas";
 
 export const ConcertinaFingeringChart = ({
-  buttonMarker,
+  action,
 }: {
-  buttonMarker: AngloConcertinaButtonMarker;
+  action: ConcertinaAction;
 }) => {
-  const { action, index } = buttonMarker;
-  const color = action === "pull" ? "blue" : "red";
+  const { bellows, index } = action;
+  const color = bellows === "pull" ? "blue" : "red";
 
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 74">
@@ -23,14 +23,14 @@ export const ConcertinaFingeringChart = ({
           }
         />
       ))}
-      {action === "pull" && (
+      {bellows === "pull" && (
         <path
           transform="translate(0 7)"
           fill={`var(--mantine-color-${color}-7)`}
           d="M157.152 34.6v30.795a2.31 2.31 0 0 1-4.62 0V52.308h-7.506l2.217 2.215a2.314 2.314 0 0 1-3.272 3.272l-6.159-6.16a2.31 2.31 0 0 1 0-3.271l6.16-6.16a2.314 2.314 0 1 1 3.271 3.273l-2.217 2.211h7.506V34.6a2.31 2.31 0 0 1 4.62 0zm23.96 13.764-6.16-6.16a2.314 2.314 0 0 0-3.271 3.273l2.215 2.211h-7.506V34.6a2.31 2.31 0 0 0-4.62 0v30.795a2.31 2.31 0 0 0 4.62 0V52.308h7.506l-2.217 2.215a2.314 2.314 0 0 0 3.272 3.272l6.159-6.16a2.31 2.31 0 0 0 .002-3.271z"
         />
       )}
-      {action === "push" && (
+      {bellows === "push" && (
         <path
           transform="translate(0 7)"
           fill={`var(--mantine-color-${color}-7)`}

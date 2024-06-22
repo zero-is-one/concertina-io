@@ -1,5 +1,5 @@
 import { requestMicAtom } from "@/atoms/mic";
-import { angloConcertinas } from "@/concertinas";
+import { concertinas } from "@/concertinas";
 import { FullscreenLayout } from "@/layouts/FullscreenLayout";
 import {
   GameSettingOrder,
@@ -29,7 +29,7 @@ export const GameSettingsPanel = ({
 }) => {
   const form = useForm({
     initialValues: {
-      concertinaId: angloConcertinas[0].id,
+      concertinaId: concertinas[0].id,
       order: "Best" satisfies GameSettingOrder,
       placement: "Spaced Repetition" satisfies GameSettingPlacement,
       key: "C" satisfies Note,
@@ -56,7 +56,7 @@ export const GameSettingsPanel = ({
                 <Select
                   {...form.getInputProps("concertinaId")}
                   label="Concertinas"
-                  data={angloConcertinas.map((concertina) => ({
+                  data={concertinas.map((concertina) => ({
                     label: concertina.title,
                     value: concertina.id,
                   }))}

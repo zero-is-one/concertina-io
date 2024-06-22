@@ -46,10 +46,10 @@ export const ExercisePlay = () => {
       <FullscreenLayout>
         <Flashcard
           deck={deck}
-          topSection={exercise.cardFrontComponent(flashcard.buttonMarker)}
+          topSection={exercise.cardFrontComponent(flashcard)}
           bottomSection={
             <Stack w="100%" justify="center" align="center">
-              <ConcertinaFingeringChart buttonMarker={flashcard.buttonMarker} />
+              <ConcertinaFingeringChart {...flashcard} />
               <Group gap={"xs"} justify="center" align="center">
                 <BsMusicNoteBeamed size={28} />
                 <Title order={2}>{flashcard.noteName}</Title>
