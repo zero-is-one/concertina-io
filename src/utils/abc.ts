@@ -4,13 +4,13 @@ import { AbcNotation, Key, Note, NoteWithOctave } from "tonal";
 // TODO: Refactor
 export function scientificToABCKeySignature(
   noteName: NoteWithOctave,
-  key?: string,
+  key: string = "C",
   isMinor?: boolean,
   isMelodic?: boolean,
 ): string {
   const keySignature = !isMinor
-    ? Key.majorKey(key || "C")
-    : Key.minorKey(key || "C")[isMelodic ? "melodic" : "natural"];
+    ? Key.majorKey(key)
+    : Key.minorKey(key)[isMelodic ? "melodic" : "natural"];
 
   if (keySignature.scale.length === 0) {
     console.error(`Invalid key signature '${key}'.`);

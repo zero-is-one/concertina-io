@@ -1,31 +1,31 @@
 import { AbcRenderer } from "@/components/AbcRenderer/AbcRenderer";
-import { NoteWithOctave } from "@/types";
+import { Clef, NoteWithOctave } from "@/types";
 import { scientificToABCKeySignature } from "@/utils/abc";
 import { Key } from "tonal";
 
 export const SingleNoteSheetMusic = ({
   noteName,
-  clef,
-  keySignature,
+  clef = "treble",
+  keySignature = "C",
   isMinor,
   isMelodic,
 }: {
   noteName: NoteWithOctave;
-  clef?: "treble" | "bass" | "alto" | "tenor";
+  clef?: Clef;
   keySignature?: string;
   isMinor?: boolean;
   isMelodic?: boolean;
 }) => {
   const keyObj = isMinor
-    ? Key.minorKey(keySignature || "C")
-    : Key.majorKey(keySignature || "C");
+    ? Key.minorKey(keySignature)
+    : Key.majorKey(keySignature);
 
   const alteration = Math.abs(keyObj.alteration);
   const staffwidth = 90 + (alteration - 1) * 10;
 
   const notation = `X: 1
 L:1/4
-K:${keySignature || "C"} clef=${clef || "treble"}
+K:${keySignature} clef=${clef}
 ${scientificToABCKeySignature(noteName, keySignature, isMinor, isMelodic)}
 `;
 

@@ -6,10 +6,13 @@ import { Flashcard } from "@/components/Flashcard/Flashcard";
 import { WakeLock } from "@/components/WakeLock/WakeLock";
 import { exercises } from "@/exercises";
 import { FullscreenLayout } from "@/layouts/FullscreenLayout";
+import { NoteWithOctave } from "@/types";
+import { renderNoteSymbol } from "@/utils/note";
 import { Stack, Title } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Note } from "tonal";
 
 export const ExercisePlay = () => {
   const { exerciseId } = useParams();
@@ -20,6 +23,7 @@ export const ExercisePlay = () => {
   const isMicActive = useAtomValue(isMicActiveAtom);
   const showBottomSection = useAtomValue(showBottomSectionAtom);
   const exercise = exercises.find((exercise) => exercise.id === exerciseId);
+  const enharmonicNote = Note.enharmonic(flashcard?.noteName) as NoteWithOctave;
 
   useEffect(() => {
     if (deck.flashcards.length <= 0) {
@@ -56,7 +60,11 @@ export const ExercisePlay = () => {
               p={"xs"}
             >
               <ConcertinaFingeringChart {...flashcard} />
-              <Title order={1}>{flashcard.noteName}</Title>
+              <Title order={1}>
+                {renderNoteSymbol(flashcard.noteName)}
+                {enharmonicNote !== flashcard.noteName &&
+                  " / " + renderNoteSymbol(enharmonicNote)}
+              </Title>
             </Stack>
           }
           showBottomSection={showBottomSection}

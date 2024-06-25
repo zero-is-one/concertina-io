@@ -23,9 +23,7 @@ export const HomePage = () => {
               <Title ta={"center"} order={4}>
                 CONCERTINA.io
               </Title>
-              <Title ta={"center"} order={5}>
-                A web app for learning the concertina
-              </Title>
+              <Text ta={"center"}>A web app for learning the concertina</Text>
             </Stack>
 
             {exercises.map((game) => (
@@ -57,13 +55,13 @@ export const Panel = ({
 }) => {
   return (
     <Anchor component={Link} to={link}>
-      <Group justify="space-between" w={"100%"}>
+      <Group justify="space-between" w={"100%"} maw={400}>
         <Card withBorder radius="md" p={0}>
           <Image src={imgSrc} height={100} />
         </Card>
 
         <Stack gap="0" flex={1}>
-          <Title order={6}>{title}</Title>
+          <Title order={3}>{title}</Title>
           <Text>{description}</Text>
         </Stack>
       </Group>

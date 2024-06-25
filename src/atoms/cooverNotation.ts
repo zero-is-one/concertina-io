@@ -1,5 +1,9 @@
 import { concertinas, indexToCooverNotationMap } from "@/concertinas";
-import { FlashCard, GameSettings } from "@/types";
+import { GameSettings } from "@/types";
+import {
+  concertinaButtonsToBasicFlashcards,
+  randomize,
+} from "@/utils/flashcard";
 import { atom } from "jotai";
 import { flashcardsAtom } from "./deck";
 
@@ -9,42 +13,15 @@ export const dispatchStartAtom = atom(
     const concertina = concertinas.find((c) => c.id === concertinaId);
     if (!concertina) throw new Error(`Concertina not found: ${concertinaId}`);
 
-    const flashcards: FlashCard[] = [];
-    concertina.buttons.forEach((button, index) => {
-      const card = {
-        placement,
-        concertina,
-        stats: {
-          views: 0,
-          correct: 0,
-          incorrect: 0,
-          streak: 0,
-        },
-      };
-
-      flashcards.push({
-        id: Math.random().toString(35).slice(-6),
-        ...card,
-        action: {
-          index,
-          bellows: "pull",
-        },
-        noteName: button.pull,
-      });
-      flashcards.push({
-        id: Math.random().toString(35).slice(-6),
-        ...card,
-        action: {
-          index,
-          bellows: "push",
-        },
-        noteName: button.push,
-      });
+    let flashcards = concertinaButtonsToBasicFlashcards({
+      concertina,
+      placement,
     });
 
     if (order === "Random") {
-      flashcards.sort(() => Math.random() - 0.5);
+      flashcards = randomize(flashcards);
     }
+
     if (order === "Best") {
       flashcards.sort(
         (a, b) =>

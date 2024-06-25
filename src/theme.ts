@@ -1,11 +1,14 @@
 import "@fontsource-variable/dm-sans";
+import "@fontsource/kaisei-opti";
+
 import { Input, Paper, createTheme } from "@mantine/core";
 
 export const theme = createTheme({
   /** Put your mantine theme override here */
   fontFamily: "'DM Sans Variable', sans-serif",
   headings: {
-    fontWeight: "bold",
+    fontFamily: "'Kaisei Opti', serif",
+    //fontWeight: "bold",
   },
   components: {
     Paper: Paper.extend({

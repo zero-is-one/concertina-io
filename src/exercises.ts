@@ -1,7 +1,8 @@
 import cooverIcon from "@/assets/cooverIcon.png";
 import sheetMusicIcon from "@/assets/sheetMusicIcon.png";
 import { WritableAtom } from "jotai";
-import { dispatchStartAtom } from "./atoms/cooverNotation";
+import { dispatchStartAtom as cooverNotationDispatchStartAtom } from "./atoms/cooverNotation";
+import { dispatchStartAtom as sheetMusicNotationDispatchStartAtom } from "./atoms/sheetMusicNotation";
 import { ConcertinaSheetMusicHintChart } from "./components/ConcertinaSheetMusicHintChart/ConcertinaSheetMusicHintChart";
 import { CooverFingeringChart } from "./components/CooverFingeringChart/CooverFingeringChart";
 import { Concertina, ConcertinaAction } from "./concertinas";
@@ -23,14 +24,14 @@ export const exercises: Exercise[] = [
     id: "coover-notation",
     name: "Coover Notation",
     iconImgSrc: cooverIcon,
-    dispatchStartAtom,
+    dispatchStartAtom: cooverNotationDispatchStartAtom,
     cardFrontComponent: CooverFingeringChart,
   },
   {
     id: "sheet-music",
     name: "Sheet Music",
     iconImgSrc: sheetMusicIcon,
-    dispatchStartAtom,
+    dispatchStartAtom: sheetMusicNotationDispatchStartAtom,
     cardFrontComponent: ConcertinaSheetMusicHintChart,
   },
 ];

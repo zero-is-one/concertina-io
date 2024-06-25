@@ -4,6 +4,8 @@ export type Note = "C" | "C#" | "D" | "D#" | "E" | "F" | "F#" | "G" | "G#" | "A"
 export type Octave = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 export type NoteWithOctave = `${Note}${Octave}`;
 
+export type Clef = "treble" | "bass" | "alto" | "tenor";
+
 export const GameSettingOrder = ["Best", "Random"] as const;
 export type GameSettingOrder = (typeof GameSettingOrder)[number];
 
@@ -25,6 +27,7 @@ export type GameSettings = {
 export type FlashCard = {
   id: string;
   noteName: NoteWithOctave;
+  clef: string;
   action: ConcertinaAction;
   concertina: Concertina;
   placement: GameSettingPlacement;
