@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
 import abcjs from "abcjs";
+import { useEffect, useRef } from "react";
 
 export const AbcRenderer = ({
   abc,

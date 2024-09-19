@@ -6,7 +6,7 @@ import { dispatchStartAtom as sheetMusicNotationDispatchStartAtom } from "./atom
 import { ConcertinaSheetMusicHintChart } from "./components/ConcertinaSheetMusicHintChart/ConcertinaSheetMusicHintChart";
 import { CooverFingeringChart } from "./components/CooverFingeringChart/CooverFingeringChart";
 import { Concertina, ConcertinaAction } from "./concertinas";
-import { GameSettings } from "./types";
+import { GameSettings, NoteWithOctave } from "./types";
 
 type Exercise = {
   id: string;
@@ -16,6 +16,7 @@ type Exercise = {
   cardFrontComponent: (props: {
     action: ConcertinaAction;
     concertina: Concertina;
+    noteName: NoteWithOctave;
   }) => JSX.Element;
 };
 

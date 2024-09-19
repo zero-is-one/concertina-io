@@ -1,5 +1,5 @@
 import { concertinas } from "@/concertinas";
-import { GameSettings, NoteWithOctave } from "@/types";
+import { FlashCard, GameSettings, NoteWithOctave } from "@/types";
 import {
   concertinaButtonsToBasicFlashcards,
   randomize,
@@ -8,6 +8,7 @@ import {
 import { atom } from "jotai";
 import { Note } from "tonal";
 import { flashcardsAtom } from "./deck";
+import { swapDuplicateFlashcardsWhenSameNoteName } from "./gameStateManager";
 
 export const dispatchStartAtom = atom(
   null,
@@ -38,7 +39,7 @@ export const dispatchStartAtom = atom(
       .filter(
         (flashcard) =>
           Note.midi(flashcard.noteName)! >= Note.midi("A3")! &&
-          Note.midi(flashcard.noteName)! <= Note.midi("C4")!,
+          Note.midi(flashcard.noteName)! <= Note.midi("E4")!,
       )
       .map((flashcard) => {
         return {
@@ -53,9 +54,24 @@ export const dispatchStartAtom = atom(
       flashcards = randomize(flashcards);
     }
     if (order === "Best") {
-      flashcards = sortByDistanceToCenter(flashcards);
+      flashcards = lightShuffle(sortByDistanceToCenter(flashcards));
     }
 
     set(flashcardsAtom, flashcards);
   },
 );
+
+const lightShuffle = (flashcards: FlashCard[]) => {
+  const newFlashcards = [...flashcards];
+
+  for (let i = 0; i < newFlashcards.length - 4; i++) {
+    const newPos = i + Math.floor(Math.random() * 3);
+    const temp = newFlashcards[i];
+    newFlashcards[i] = newFlashcards[newPos];
+    newFlashcards[newPos] = temp;
+  }
+
+  swapDuplicateFlashcardsWhenSameNoteName(newFlashcards);
+
+  return newFlashcards;
+};
