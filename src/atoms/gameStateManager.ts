@@ -87,10 +87,10 @@ export const onCorrectNoteEffect = atomEffect((get, set) => {
   }
 
   if (flashcard.placement === "Spaced Repetition") {
-    const noIncorrectStreakBonus = flashcard.stats.incorrect === 0 ? 1 : 0;
-    const streak = flashcard.stats.streak + noIncorrectStreakBonus;
     const positionJitter = Math.floor(Math.random() * 4);
-    const position = Math.pow(2, streak) + positionJitter;
+    const position =
+      Math.pow(flashcard.stats.incorrect > 0 ? 3 : 6, flashcard.stats.streak) +
+      positionJitter;
 
     set(flashcardsAtom, (flashcards) => {
       const [first, ...rest] = flashcards;

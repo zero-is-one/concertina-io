@@ -35,6 +35,10 @@ export const HomePage = () => {
                 imgSrc={game.iconImgSrc}
               />
             ))}
+
+            <Text ta="center" c="dimmed">
+              v. 2RZJ80
+            </Text>
           </Stack>
         </Center>
       </Container>
