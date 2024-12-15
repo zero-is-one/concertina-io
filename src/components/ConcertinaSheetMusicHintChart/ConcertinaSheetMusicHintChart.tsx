@@ -1,5 +1,4 @@
-import { Concertina, ConcertinaAction } from "@/concertinas";
-import { NoteWithOctave } from "@/types";
+import { FlashCard } from "@/types";
 import { isNoteNameEqual as isEqual } from "@/utils/note";
 import { Box, Group, Stack, Title } from "@mantine/core";
 import { SingleNoteSheetMusic } from "../SingleNoteSheetMusic/SingleNoteSheetMusic";
@@ -8,11 +7,8 @@ export const ConcertinaSheetMusicHintChart = ({
   concertina,
   action,
   noteName,
-}: {
-  concertina: Concertina;
-  action: ConcertinaAction;
-  noteName: NoteWithOctave;
-}) => {
+  clef,
+}: FlashCard) => {
   let showAction = false;
   let showRow = false;
 
@@ -35,7 +31,7 @@ export const ConcertinaSheetMusicHintChart = ({
   return (
     <Stack gap={0} justify="center" align="center">
       <Box w="85%">
-        <SingleNoteSheetMusic noteName={noteName} />
+        <SingleNoteSheetMusic noteName={noteName} clef={clef} />
       </Box>
       <Group justify="center" align="center">
         {showAction && (

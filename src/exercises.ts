@@ -5,19 +5,14 @@ import { dispatchStartAtom as cooverNotationDispatchStartAtom } from "./atoms/co
 import { dispatchStartAtom as sheetMusicNotationDispatchStartAtom } from "./atoms/sheetMusicNotation";
 import { ConcertinaSheetMusicHintChart } from "./components/ConcertinaSheetMusicHintChart/ConcertinaSheetMusicHintChart";
 import { CooverFingeringChart } from "./components/CooverFingeringChart/CooverFingeringChart";
-import { Concertina, ConcertinaAction } from "./concertinas";
-import { GameSettings, NoteWithOctave } from "./types";
+import { FlashCard, GameSettings } from "./types";
 
 type Exercise = {
   id: string;
   name: string;
   iconImgSrc: string;
   dispatchStartAtom: WritableAtom<null, [GameSettings], void>;
-  cardFrontComponent: (props: {
-    action: ConcertinaAction;
-    concertina: Concertina;
-    noteName: NoteWithOctave;
-  }) => JSX.Element;
+  cardFrontComponent: (props: FlashCard) => JSX.Element;
 };
 
 export const exercises: Exercise[] = [
