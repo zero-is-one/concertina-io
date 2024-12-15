@@ -14,6 +14,7 @@ import {
   Paper,
   Select,
   Stack,
+  Switch,
   Text,
   Title,
 } from "@mantine/core";
@@ -33,6 +34,7 @@ export const GameSettingsPanel = ({
       order: "Best" satisfies GameSettingOrder,
       placement: "Spaced Repetition" satisfies GameSettingPlacement,
       key: "C" satisfies Note,
+      reverseOrder: false,
     } satisfies GameSettings,
   });
 
@@ -66,6 +68,15 @@ export const GameSettingsPanel = ({
                 />
 
                 <Select
+                  {...form.getInputProps("placement")}
+                  label="Placement"
+                  data={GameSettingPlacement}
+                  w={170}
+                  withCheckIcon={false}
+                  allowDeselect={false}
+                />
+
+                <Select
                   {...form.getInputProps("order")}
                   label="Order"
                   data={GameSettingOrder}
@@ -74,13 +85,9 @@ export const GameSettingsPanel = ({
                   allowDeselect={false}
                 />
 
-                <Select
-                  {...form.getInputProps("placement")}
-                  label="Placement"
-                  data={GameSettingPlacement}
-                  w={170}
-                  withCheckIcon={false}
-                  allowDeselect={false}
+                <Switch
+                  {...form.getInputProps("reverseOrder")}
+                  label="Reverse Note Order"
                 />
 
                 <Group justify="flex-end" mt="md">

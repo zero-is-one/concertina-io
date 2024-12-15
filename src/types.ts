@@ -22,6 +22,7 @@ export type GameSettings = {
   order: GameSettingOrder;
   placement: GameSettingPlacement;
   key?: string;
+  reverseOrder?: boolean;
 };
 
 export type FlashCard = {

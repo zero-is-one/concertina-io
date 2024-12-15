@@ -12,7 +12,11 @@ import { swapDuplicateFlashcardsWhenSameNoteName } from "./gameStateManager";
 
 export const dispatchStartAtom = atom(
   null,
-  (_get, set, { concertinaId, order, placement }: GameSettings) => {
+  (
+    _get,
+    set,
+    { concertinaId, order, placement, reverseOrder }: GameSettings,
+  ) => {
     const concertina = concertinas.find((c) => c.id === concertinaId);
     if (!concertina) throw new Error(`Concertina not found: ${concertinaId}`);
 
@@ -55,6 +59,10 @@ export const dispatchStartAtom = atom(
     }
     if (order === "Best") {
       flashcards = lightShuffle(sortByDistanceToCenter(flashcards));
+    }
+
+    if (reverseOrder) {
+      flashcards.reverse();
     }
 
     set(flashcardsAtom, flashcards);
