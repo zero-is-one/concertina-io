@@ -48,7 +48,7 @@ export const dispatchStartAtom = atom(
       .map((flashcard) => {
         return {
           ...flashcard,
-          clef: "treble",
+          clef: "treble" as const,
         };
       });
 

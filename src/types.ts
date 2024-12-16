@@ -28,7 +28,7 @@ export type GameSettings = {
 export type FlashCard = {
   id: string;
   noteName: NoteWithOctave;
-  clef: string;
+  clef: Clef;
   action: ConcertinaAction;
   concertina: Concertina;
   placement: GameSettingPlacement;
